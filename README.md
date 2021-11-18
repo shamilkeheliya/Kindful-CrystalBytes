@@ -1,4 +1,4 @@
-# Group Project - Crystal Bytes
+# Kindful - Crystal Bytes(Group Project)
 
 ## Project Details
 - Group Name - **Crystal Bytes**
