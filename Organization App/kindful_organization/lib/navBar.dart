@@ -30,7 +30,7 @@ class _NavBarState extends State<NavBar> {
     final _kBottmonNavBarItems = <BottomNavigationBarItem>[
       const BottomNavigationBarItem(
         icon: Icon(Icons.fastfood_outlined),
-        label: 'Food',
+        label: 'Foods',
       ),
       const BottomNavigationBarItem(
         icon: Icon(Icons.all_inclusive_outlined),
@@ -46,12 +46,14 @@ class _NavBarState extends State<NavBar> {
     final bottomNavBar = BottomNavigationBar(
       items: _kBottmonNavBarItems,
       currentIndex: _currentTabIndex,
+      selectedLabelStyle: TextStyle(fontFamily: 'kindful'),
+      unselectedLabelStyle: TextStyle(fontFamily: 'kindful'),
       showSelectedLabels: true,
       showUnselectedLabels: true,
+      //unselectedItemColor: kMainPurple,
       selectedItemColor: kMainPurple,
-      //unselectedItemColor: kMainGreen,
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      //backgroundColor: kMainPurple,
+      //backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: kMainGreen,
       type: BottomNavigationBarType.fixed,
       unselectedIconTheme: IconThemeData(size: 30.0),
       selectedIconTheme: IconThemeData(size: 35.0),
@@ -63,6 +65,16 @@ class _NavBarState extends State<NavBar> {
       },
     );
     return Scaffold(
+      // appBar: AppBar(
+      //   title: Text('Kindful',
+      //     style: TextStyle(
+      //       color: kMainPurple,
+      //       fontFamily: 'kindful',
+      //       fontSize: 35,
+      //     ),
+      //   ),
+      //   backgroundColor: kMainGreen,
+      // ),
       body: _kTabPages[_currentTabIndex],
       bottomNavigationBar: bottomNavBar,
     );

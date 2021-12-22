@@ -48,12 +48,13 @@ class _LoadingScreenState extends State<LoadingScreen> {
         children: [
           Padding(
             padding: const EdgeInsets.all(50.0),
-            child: Card(
-              clipBehavior: Clip.antiAlias,
-              shape: CircleBorder(),
-              elevation: 18,
-              child: Image.asset('images/logo.png'),
-            ),
+            child: Image.asset('images/logo.png'),
+            // child: Card(
+            //   clipBehavior: Clip.antiAlias,
+            //   shape: CircleBorder(),
+            //   elevation: 18,
+            //   child: Image.asset('images/logo.png'),
+            // ),
           ),
           isLoading ? SpinKitRing(
             color: kMainPurple,
@@ -76,7 +77,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
                     padding: const EdgeInsets.only(right: 10),
                     child: Image.asset('images/google.png',height: 25),
                   ),
-                  Text('Continue with Google'),
+                  Text('Continue with Google',style: TextStyle(fontFamily: 'kindful', fontSize: 16, color: kMainGreen,),),
                 ],
               ),
               style: ElevatedButton.styleFrom(primary: kMainPurple),

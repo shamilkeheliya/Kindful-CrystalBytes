@@ -18,10 +18,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        scaffoldBackgroundColor: kMainGreen,
+        //fontFamily: 'kindful'
+        //scaffoldBackgroundColor: kMainGreen,
       ),
       home: Scaffold(
-        body: LoadingScreen(),
+        body: NavBar(''),
       ),
     );
   }

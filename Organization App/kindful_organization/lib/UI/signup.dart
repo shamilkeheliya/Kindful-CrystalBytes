@@ -14,10 +14,10 @@ class _SignUpState extends State<SignUp> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Create Account',
-          style: TextStyle(color: kMainGreen),
+          style: TextStyle(color: kMainPurple,fontFamily: 'kindful',),
         ),
         centerTitle: true,
-        backgroundColor: kMainPurple,
+        backgroundColor: kMainGreen,
         iconTheme: IconThemeData(
           color: kMainGreen,
         ),

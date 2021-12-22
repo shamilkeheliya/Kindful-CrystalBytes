@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kindful_organization/const.dart';
 
 class Donations extends StatefulWidget {
   const Donations({Key? key}) : super(key: key);
@@ -10,6 +11,13 @@ class Donations extends StatefulWidget {
 class _DonationsState extends State<Donations> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){},
+        backgroundColor: kMainGreen,
+        child: kFABIcon,
+        shape: kFABShape,
+      ),
+    );
   }
 }
