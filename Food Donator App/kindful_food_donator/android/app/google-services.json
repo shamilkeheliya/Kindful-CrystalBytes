@@ -1,0 +1,118 @@
+{
+  "project_info": {
+    "project_number": "14056090943",
+    "project_id": "kindful-6b6dd",
+    "storage_bucket": "kindful-6b6dd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:14056090943:android:8081f28db467cd565e778a",
+        "android_client_info": {
+          "package_name": "app.kindful_donator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "14056090943-jf6bp0vandqdq0gu0hr21k62vi9it182.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAHafahoOJM5ZxV3WnFfwTtTjOkaVxrXU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "14056090943-jf6bp0vandqdq0gu0hr21k62vi9it182.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "14056090943-nag9ica14hmhoif29ad9405dle19u08p.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "app.kindfulDonator"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:14056090943:android:675f800d73c9ba225e778a",
+        "android_client_info": {
+          "package_name": "app.kindful_food_donator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "14056090943-jf6bp0vandqdq0gu0hr21k62vi9it182.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAHafahoOJM5ZxV3WnFfwTtTjOkaVxrXU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "14056090943-jf6bp0vandqdq0gu0hr21k62vi9it182.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "14056090943-nag9ica14hmhoif29ad9405dle19u08p.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "app.kindfulDonator"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:14056090943:android:e472834a08170c045e778a",
+        "android_client_info": {
+          "package_name": "app.kindful_organization"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "14056090943-jf6bp0vandqdq0gu0hr21k62vi9it182.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAHafahoOJM5ZxV3WnFfwTtTjOkaVxrXU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "14056090943-jf6bp0vandqdq0gu0hr21k62vi9it182.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "14056090943-nag9ica14hmhoif29ad9405dle19u08p.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "app.kindfulDonator"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
