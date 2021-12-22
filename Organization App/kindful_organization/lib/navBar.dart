@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:kindful_organization/UI/loadingScreen.dart';
+import 'package:kindful_organization/UI/navBar/donations.dart';
+import 'package:kindful_organization/UI/navBar/food.dart';
+import 'package:kindful_organization/UI/navBar/profile.dart';
+import 'package:kindful_organization/const.dart';
 
+// ignore: must_be_immutable
 class NavBar extends StatefulWidget {
-  const NavBar({Key? key}) : super(key: key);
+  String userID = '';
+
+  NavBar(userID){
+    this.userID = userID;
+  }
 
   @override
   _NavBarState createState() => _NavBarState();
@@ -14,9 +22,9 @@ class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
     final _kTabPages = <Widget>[
-      Center(child: LoadingScreen()),
-      Center(child: LoadingScreen()),
-      Center(child: LoadingScreen()),
+      Center(child: Food()),
+      Center(child: Donations()),
+      Center(child: Profile()),
     ];
 
     final _kBottmonNavBarItems = <BottomNavigationBarItem>[
@@ -40,8 +48,10 @@ class _NavBarState extends State<NavBar> {
       currentIndex: _currentTabIndex,
       showSelectedLabels: true,
       showUnselectedLabels: true,
-      //selectedItemColor: mainColor,
+      selectedItemColor: kMainPurple,
+      //unselectedItemColor: kMainGreen,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      //backgroundColor: kMainPurple,
       type: BottomNavigationBarType.fixed,
       unselectedIconTheme: IconThemeData(size: 30.0),
       selectedIconTheme: IconThemeData(size: 35.0),
