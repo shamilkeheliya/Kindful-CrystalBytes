@@ -1,34 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:kindful_donator/UI/loadingScreen.dart';
+import 'package:kindful_donator/UI/navBar/donations.dart';
+import 'package:kindful_donator/UI/navBar/feed.dart';
+import 'package:kindful_donator/UI/navBar/profile.dart';
+import 'package:kindful_donator/UI/navBar/search.dart';
+import 'package:kindful_donator/const.dart';
 
-class FoodNavBar extends StatefulWidget {
-  const FoodNavBar({Key? key}) : super(key: key);
+class NavBar extends StatefulWidget {
+  const NavBar({Key? key}) : super(key: key);
 
   @override
-  _FoodNavBarState createState() => _FoodNavBarState();
+  _NavBarState createState() => _NavBarState();
 }
 
-class _FoodNavBarState extends State<FoodNavBar> {
+class _NavBarState extends State<NavBar> {
   int _currentTabIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     final _kTabPages = <Widget>[
-      Center(child: LoadingScreen()),
-      Center(child: LoadingScreen()),
-      Center(child: LoadingScreen()),
-      Center(child: LoadingScreen()),
-      Center(child: LoadingScreen()),
+      Center(child: Feed()),
+      Center(child: Donations()),
+      Center(child: Search()),
+      Center(child: Profile()),
     ];
 
     final _kBottmonNavBarItems = <BottomNavigationBarItem>[
       const BottomNavigationBarItem(
-        icon: Icon(Icons.archive_outlined),
-        label: 'Requests',
-      ),
-      const BottomNavigationBarItem(
-        icon: Icon(Icons.fastfood_outlined),
-        label: 'Foods',
+        icon: Icon(Icons.backup_table_outlined),
+        label: 'Feed',
       ),
       const BottomNavigationBarItem(
         icon: Icon(Icons.all_inclusive_outlined),
@@ -48,10 +47,14 @@ class _FoodNavBarState extends State<FoodNavBar> {
     final bottomNavBar = BottomNavigationBar(
       items: _kBottmonNavBarItems,
       currentIndex: _currentTabIndex,
+      selectedLabelStyle: TextStyle(fontFamily: 'kindful'),
+      unselectedLabelStyle: TextStyle(fontFamily: 'kindful'),
       showSelectedLabels: true,
       showUnselectedLabels: true,
-      //selectedItemColor: mainColor,
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      //unselectedItemColor: kMainPurple,
+      selectedItemColor: kMainPurple,
+      //backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: kMainGreen,
       type: BottomNavigationBarType.fixed,
       unselectedIconTheme: IconThemeData(size: 30.0),
       selectedIconTheme: IconThemeData(size: 35.0),

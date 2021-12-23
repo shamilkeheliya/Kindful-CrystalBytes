@@ -8,7 +8,7 @@ import 'package:kindful_organization/const.dart';
 class NavBar extends StatefulWidget {
   String userID = '';
 
-  NavBar(userID){
+  NavBar(userID) {
     this.userID = userID;
   }
 

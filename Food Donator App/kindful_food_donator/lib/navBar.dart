@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:kindful_donator/UI/loadingScreen.dart';
+import 'package:kindful_food_donator/UI/loadingScreen.dart';
+import 'package:kindful_food_donator/const.dart';
 
-class DonatorNavBar extends StatefulWidget {
-  const DonatorNavBar({Key? key}) : super(key: key);
+class NavBar extends StatefulWidget {
+  const NavBar({Key? key}) : super(key: key);
 
   @override
-  _DonatorNavBarState createState() => _DonatorNavBarState();
+  _NavBarState createState() => _NavBarState();
 }
 
-class _DonatorNavBarState extends State<DonatorNavBar> {
+class _NavBarState extends State<NavBar> {
   int _currentTabIndex = 0;
 
   @override
@@ -16,16 +17,18 @@ class _DonatorNavBarState extends State<DonatorNavBar> {
     final _kTabPages = <Widget>[
       Center(child: LoadingScreen()),
       Center(child: LoadingScreen()),
+      Center(child: LoadingScreen()),
+      Center(child: LoadingScreen()),
     ];
 
     final _kBottmonNavBarItems = <BottomNavigationBarItem>[
       const BottomNavigationBarItem(
-        icon: Icon(Icons.archive_outlined),
-        label: 'Requests',
+        icon: Icon(Icons.backup_table_outlined),
+        label: 'Feed',
       ),
       const BottomNavigationBarItem(
-        icon: Icon(Icons.all_inclusive_outlined),
-        label: 'Donations',
+        icon: Icon(Icons.fastfood_outlined),
+        label: 'Foods',
       ),
       const BottomNavigationBarItem(
         icon: Icon(Icons.search_outlined),
@@ -41,10 +44,14 @@ class _DonatorNavBarState extends State<DonatorNavBar> {
     final bottomNavBar = BottomNavigationBar(
       items: _kBottmonNavBarItems,
       currentIndex: _currentTabIndex,
+      selectedLabelStyle: TextStyle(fontFamily: 'kindful'),
+      unselectedLabelStyle: TextStyle(fontFamily: 'kindful'),
       showSelectedLabels: true,
       showUnselectedLabels: true,
-      //selectedItemColor: mainColor,
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      //unselectedItemColor: kMainPurple,
+      selectedItemColor: kMainPurple,
+      //backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: kMainGreen,
       type: BottomNavigationBarType.fixed,
       unselectedIconTheme: IconThemeData(size: 30.0),
       selectedIconTheme: IconThemeData(size: 35.0),
