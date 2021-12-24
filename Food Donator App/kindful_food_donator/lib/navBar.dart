@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:kindful_food_donator/UI/loadingScreen.dart';
+import 'package:kindful_food_donator/UI/navBar/Foods.dart';
+import 'package:kindful_food_donator/UI/navBar/feed.dart';
+import 'package:kindful_food_donator/UI/navBar/profile.dart';
+import 'package:kindful_food_donator/UI/navBar/search.dart';
 import 'package:kindful_food_donator/const.dart';
 
 class NavBar extends StatefulWidget {
-  const NavBar({Key? key}) : super(key: key);
+  String userID = '';
+
+  NavBar(userID) {
+    this.userID = userID;
+  }
 
   @override
   _NavBarState createState() => _NavBarState();
@@ -15,10 +22,10 @@ class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
     final _kTabPages = <Widget>[
-      Center(child: LoadingScreen()),
-      Center(child: LoadingScreen()),
-      Center(child: LoadingScreen()),
-      Center(child: LoadingScreen()),
+      Center(child: Feed()),
+      Center(child: Foods()),
+      Center(child: Search()),
+      Center(child: Profile()),
     ];
 
     final _kBottmonNavBarItems = <BottomNavigationBarItem>[
@@ -62,9 +69,12 @@ class _NavBarState extends State<NavBar> {
         });
       },
     );
-    return Scaffold(
-      body: _kTabPages[_currentTabIndex],
-      bottomNavigationBar: bottomNavBar,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        body: _kTabPages[_currentTabIndex],
+        bottomNavigationBar: bottomNavBar,
+      ),
     );
   }
 }

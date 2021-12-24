@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:kindful_organization/UI/loadingScreen.dart';
-import 'package:kindful_organization/navBar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

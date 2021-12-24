@@ -5,8 +5,13 @@ import 'package:kindful_donator/UI/navBar/profile.dart';
 import 'package:kindful_donator/UI/navBar/search.dart';
 import 'package:kindful_donator/const.dart';
 
+// ignore: must_be_immutable
 class NavBar extends StatefulWidget {
-  const NavBar({Key? key}) : super(key: key);
+  String userID = '';
+
+  NavBar(userID) {
+    this.userID = userID;
+  }
 
   @override
   _NavBarState createState() => _NavBarState();
@@ -65,9 +70,12 @@ class _NavBarState extends State<NavBar> {
         });
       },
     );
-    return Scaffold(
-      body: _kTabPages[_currentTabIndex],
-      bottomNavigationBar: bottomNavBar,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        body: _kTabPages[_currentTabIndex],
+        bottomNavigationBar: bottomNavBar,
+      ),
     );
   }
 }

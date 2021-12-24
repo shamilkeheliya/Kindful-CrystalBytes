@@ -64,19 +64,12 @@ class _NavBarState extends State<NavBar> {
         });
       },
     );
-    return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Kindful',
-      //     style: TextStyle(
-      //       color: kMainPurple,
-      //       fontFamily: 'kindful',
-      //       fontSize: 35,
-      //     ),
-      //   ),
-      //   backgroundColor: kMainGreen,
-      // ),
-      body: _kTabPages[_currentTabIndex],
-      bottomNavigationBar: bottomNavBar,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        body: _kTabPages[_currentTabIndex],
+        bottomNavigationBar: bottomNavBar,
+      ),
     );
   }
 }

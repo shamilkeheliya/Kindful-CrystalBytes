@@ -26,7 +26,7 @@ class Users {
   Future<bool> isRegister(String userID) async {
     bool result = false;
     await FirebaseFirestore.instance
-        .collection('organizations')
+        .collection('food_donators')
         .doc(userID)
         .get()
         .then((DocumentSnapshot documentSnapshot) {

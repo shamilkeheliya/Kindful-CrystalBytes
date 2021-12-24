@@ -26,8 +26,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
   currentUser() {
     User? user = FirebaseAuth.instance.currentUser;
 
-    users.isRegister(user!.uid);
-
     if (user != null) {
       Navigator.push(
         context,
@@ -66,11 +64,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
                       // ignore: await_only_futures
                       User? user = await FirebaseAuth.instance.currentUser;
                       bool isReg = await users.isRegister(user!.uid);
+
                       if (isReg == true) {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => NavBar(user.uid),
+                            builder: (context) => NavBar(user!.uid),
                           ),
                         );
                       } else {
