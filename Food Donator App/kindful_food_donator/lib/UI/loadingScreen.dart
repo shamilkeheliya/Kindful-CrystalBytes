@@ -52,7 +52,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
             child: Image.asset('images/logo.png'),
           ),
           isLoading
-              ? SpinKitRing(
+              ? const SpinKitRing(
                   color: kMainPurple,
                   size: 50.0,
                 )
@@ -89,7 +89,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
                           padding: const EdgeInsets.only(right: 10),
                           child: Image.asset('images/google.png', height: 25),
                         ),
-                        Text(
+                        const Text(
                           'Continue with Google',
                           style: TextStyle(
                             fontFamily: 'kindful',

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:kindful_food_donator/const.dart';
 import 'package:kindful_food_donator/textField.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 // ignore: must_be_immutable
 class SignUp extends StatefulWidget {
   String userID = '';
 
+  // ignore: use_key_in_widget_constructors
   SignUp(userID) {
     this.userID = userID;
   }
@@ -15,8 +17,16 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  TextFieldForm name = new TextFieldForm();
-  TextFieldForm city = new TextFieldForm();
+  TextFieldForm name = TextFieldForm();
+  TextFieldForm city = TextFieldForm();
+  TextFieldForm district = TextFieldForm();
+  TextFieldForm type = TextFieldForm();
+  TextFieldForm phone = TextFieldForm();
+
+  String selectedDistrict = kDistricts[0];
+  String selectedType = kTypes[0];
+
+  bool isProsessing = false;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +34,7 @@ class _SignUpState extends State<SignUp> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: kMainGreen,
-        title: Text(
+        title: const Text(
           'Create Account',
           style: TextStyle(
             fontFamily: 'kindful',
@@ -32,97 +42,133 @@ class _SignUpState extends State<SignUp> {
           ),
         ),
       ),
-      body: ListView(
-        children: [
-          SizedBox(height: 10),
-          //
-          // Name
-          //
-          Padding(
-            padding: kTextFieldPadding,
-            child: TextField(
-              decoration: kTextInputDecoration('Name', name.isValidate),
-              cursorColor: kMainPurple,
-              textCapitalization: TextCapitalization.words,
-              maxLength: 50,
-              onChanged: (value) {
-                setState(() {
-                  name.variableName = value;
-                });
-              },
-              controller: name.textEditingController,
-            ),
-          ),
-          Padding(
-            padding: kTextFieldPadding,
-            child: TextField(
-              decoration: kTextInputDecoration('City', city.isValidate),
-              maxLength: 50,
-              onChanged: (value) {
-                setState(() {
-                  city.variableName = value;
-                });
-              },
-              controller: city.textEditingController,
-            ),
-          ),
-          // Padding(
-          //   padding: EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 10.0),
-          //   child: Column(
-          //     crossAxisAlignment: CrossAxisAlignment.start,
-          //     children: [
-          //       Text(
-          //         'District',
-          //         textAlign: TextAlign.left,
-          //         style: TextStyle(color: Colors.grey),
-          //       ),
-          //       Autocomplete<String>(
-          //         optionsBuilder: (TextEditingValue textEditingValue) {
-          //           if (textEditingValue.text == '') {
-          //             setState(() {
-          //               district = '';
-          //             });
-          //             return kDistricts;
-          //           }
-          //           return kDistricts.where((String option) {
-          //             return option
-          //                 .contains(textEditingValue.text.toLowerCase());
-          //           });
-          //         },
-          //         onSelected: (String selection) {
-          //           setState(() {
-          //             district = selection;
-          //           });
-          //         },
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          SizedBox(height: 25),
-          // Button
-          MaterialButton(
-            onPressed: () {
-              validateForm();
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(14),
-                color: kMainPurple,
+      body: ModalProgressHUD(
+        inAsyncCall: isProsessing,
+        child: ListView(
+          children: [
+            const SizedBox(height: 10),
+            //
+            // Name
+            //
+            Padding(
+              padding: kTextFieldPadding,
+              child: TextField(
+                decoration: kTextInputDecoration('Name', name.isValidate),
+                cursorColor: kMainPurple,
+                textCapitalization: TextCapitalization.words,
+                maxLength: 50,
+                onChanged: (value) {
+                  setState(() {
+                    name.variableName = value;
+                  });
+                },
+                controller: name.textEditingController,
               ),
-              height: 50,
-              child: Center(
-                child: Text(
-                  'Create Account',
-                  style: TextStyle(
-                    color: kMainGreen,
-                    fontFamily: 'kindful',
-                    fontSize: 18,
-                  ),
+            ),
+            //
+            // Phone Number
+            //
+            Padding(
+              padding: kTextFieldPadding,
+              child: TextField(
+                decoration: kTextInputDecoration('Phone Number', phone.isValidate),
+                cursorColor: kMainPurple,
+                keyboardType: TextInputType.number,
+                maxLength: 10,
+                onChanged: (value) {
+                  setState(() {
+                    phone.variableName = value;
+                  });
+                },
+                controller: phone.textEditingController,
+              ),
+            ),
+            //
+            // City
+            //
+            Padding(
+              padding: kTextFieldPadding,
+              child: TextField(
+                decoration: kTextInputDecoration('City', city.isValidate),
+                textCapitalization: TextCapitalization.words,
+                maxLength: 50,
+                onChanged: (value) {
+                  setState(() {
+                    city.variableName = value;
+                  });
+                },
+                controller: city.textEditingController,
+              ),
+            ),//
+            //
+            // District
+            //
+            Padding(
+              padding: kTextFieldPadding,
+              child: kDropDownButtonDecoration(
+                'District',
+                DropdownButton(
+                  underline: const SizedBox(),
+                  value: selectedDistrict,
+                  onChanged: (value){
+                    setState(() {
+                      selectedDistrict = value.toString();
+                      district.variableName = selectedDistrict;
+                    });
+                  },
+                  items: kDistricts.map((valueItem){
+                    return DropdownMenuItem(
+                      value: valueItem,
+                      child: Text(valueItem),
+                    );
+                  }).toList(),
                 ),
               ),
             ),
-          ),
-        ],
+            //
+            // SizedBox
+            //
+            const SizedBox(height: 15),
+            //
+            // Type
+            //
+            Padding(
+              padding: kTextFieldPadding,
+              child: kDropDownButtonDecoration(
+                'Type',
+                DropdownButton(
+                  underline: const SizedBox(),
+                  value: selectedType,
+                  onChanged: (value){
+                    setState(() {
+                      selectedType = value.toString();
+                      type.variableName = selectedType;
+                    });
+                  },
+                  items: kTypes.map((valueItem){
+                    return DropdownMenuItem(
+                      value: valueItem,
+                      child: Text(valueItem),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ),
+            //
+            // Terms & Privacy Policy
+            //
+            kTextTermsAndPrivacyPolicy(),
+            //
+            // Button
+            //
+            MaterialButton(
+              onPressed: () {
+                validateForm();
+              },
+              child: kButtonBody('Create Account'),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -130,7 +176,26 @@ class _SignUpState extends State<SignUp> {
   validateForm() {
     setState(() {
       name.isValidate = name.textEditingController.text.isEmpty ? true : false;
+      phone.isValidate = phone.textEditingController.text.isEmpty ? true : false;
       city.isValidate = city.textEditingController.text.isEmpty ? true : false;
+
+      if(name.textEditingController.text.isEmpty || phone.textEditingController.text.isEmpty || city.textEditingController.text.isEmpty){
+      }else{
+        setState(() {
+          isProsessing = true;
+        });
+      }
     });
+  }
+
+  createAccount(){
+    try{
+
+    }
+    catch(error){
+      setState(() {
+        isProsessing = false;
+      });
+    }
   }
 }
