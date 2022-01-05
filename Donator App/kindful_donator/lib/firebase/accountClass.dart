@@ -1,20 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Accounts{
-  Future<bool> createAccount(id,name,email,phone,city,district,type) async {
+  Future<bool> createAccount(id,name,email,phone,district) async {
 
     bool result = false;
 
     await FirebaseFirestore.instance
-        .collection('food_donators')
+        .collection('donators')
         .doc(id)
         .set({
           'name': name,
           'email': email,
           'phone': phone,
-          'city': city,
           'district': district,
-          'type': type,
           'verify': false,
           'requestVerify': false
         }).then((value){

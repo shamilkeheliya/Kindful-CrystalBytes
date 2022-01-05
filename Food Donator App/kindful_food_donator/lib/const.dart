@@ -85,6 +85,25 @@ Container kButtonBody(lable){
   );
 }
 
+class SnackBarClass{
+  static kShowSuccessSnackBar(context){
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Success!'),
+          action: SnackBarAction(
+            label: 'OKAY',
+            onPressed: () {
+            },
+          ),
+        ),
+    );
+  }
+
+  static kShowCustomSnackBar(context,title,button_title,button){
+
+  }
+}
+
 const List<String> kDistricts = <String>[
   'Ampara',
   'Anuradhapura',

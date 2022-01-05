@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:kindful_food_donator/const.dart';
+import 'package:kindful_food_donator/firebase/accountClass.dart';
+import 'package:kindful_food_donator/navBar.dart';
 import 'package:kindful_food_donator/textField.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 // ignore: must_be_immutable
 class SignUp extends StatefulWidget {
   String userID = '';
+  String email = '';
 
   // ignore: use_key_in_widget_constructors
-  SignUp(userID) {
+  SignUp(userID, email) {
+    // ignore: prefer_initializing_formals
     this.userID = userID;
+    // ignore: prefer_initializing_formals
+    this.email = email;
   }
 
   @override
@@ -19,8 +25,6 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   TextFieldForm name = TextFieldForm();
   TextFieldForm city = TextFieldForm();
-  TextFieldForm district = TextFieldForm();
-  TextFieldForm type = TextFieldForm();
   TextFieldForm phone = TextFieldForm();
 
   String selectedDistrict = kDistricts[0];
@@ -113,7 +117,6 @@ class _SignUpState extends State<SignUp> {
                   onChanged: (value){
                     setState(() {
                       selectedDistrict = value.toString();
-                      district.variableName = selectedDistrict;
                     });
                   },
                   items: kDistricts.map((valueItem){
@@ -142,7 +145,6 @@ class _SignUpState extends State<SignUp> {
                   onChanged: (value){
                     setState(() {
                       selectedType = value.toString();
-                      type.variableName = selectedType;
                     });
                   },
                   items: kTypes.map((valueItem){
@@ -164,6 +166,8 @@ class _SignUpState extends State<SignUp> {
             MaterialButton(
               onPressed: () {
                 validateForm();
+                //Accounts accounts = Accounts();
+                //bool result = accounts.createAccount('testID', 'Shamil', 'email@email.com', '0767474793', 'Mahi', 'Badulla', 'Hotel');
               },
               child: kButtonBody('Create Account'),
             ),
@@ -184,18 +188,40 @@ class _SignUpState extends State<SignUp> {
         setState(() {
           isProsessing = true;
         });
+        createAccount();
       }
     });
   }
 
-  createAccount(){
-    try{
+  createAccount() async{
+    Accounts accounts = Accounts();
+    bool result =await accounts.createAccount(widget.userID, name.variableName, widget.email, phone.variableName, city.variableName, selectedDistrict, selectedType);
 
+    if(result){
+      SnackBarClass.kShowSuccessSnackBar(context);
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => NavBar(widget.userID),
+        ),
+      );
     }
-    catch(error){
+    else{
       setState(() {
         isProsessing = false;
       });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Cannot Create Account'),
+          action: SnackBarAction(
+            label: 'Retry',
+            onPressed: ()=> validateForm(),
+          ),
+        ),
+      );
     }
+
   }
 }

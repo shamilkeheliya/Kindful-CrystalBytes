@@ -77,7 +77,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SignUp(user.uid),
+                            builder: (context) => SignUp(user.uid, user.email),
                           ),
                         );
                       }

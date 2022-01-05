@@ -6,7 +6,7 @@ class Accounts{
     bool result = false;
 
     await FirebaseFirestore.instance
-        .collection('food_donators')
+        .collection('organizations')
         .doc(id)
         .set({
           'name': name,
