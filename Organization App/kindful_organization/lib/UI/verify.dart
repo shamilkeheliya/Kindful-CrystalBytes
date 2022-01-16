@@ -139,7 +139,7 @@ class _VerifyState extends State<Verify> {
         child: Container(
           decoration: BoxDecoration(
             color: kMainGreen,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(14),
           ),
           child: Padding(
             padding: const EdgeInsets.all(5.0),
