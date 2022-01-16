@@ -83,41 +83,46 @@ class _VerifyState extends State<Verify> {
             //
             CheckboxListTile(
               title: Text("My Location is Correct"),
+              checkColor: kMainGreen,
+              activeColor: kMainPurple,
               value: checkedValue,
               onChanged: (newValue) {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return CupertinoAlertDialog(
-                      title:
-                          Text("Warning", style: TextStyle(color: Colors.red)),
-                      content: Text(
-                          'You can not change your Location after requesting for Verification Process.'),
-                      actions: [
-                        TextButton(
-                          child: Text("Cancel",
-                              style: TextStyle(color: kMainPurple)),
-                          onPressed: () {
-                            setState(() {
-                              checkedValue = false;
-                            });
-                            Navigator.pop(context);
-                          },
-                        ),
-                        TextButton(
-                          child: Text("Confirm",
-                              style: TextStyle(color: kMainPurple)),
-                          onPressed: () {
-                            setState(() {
-                              checkedValue = true;
-                            });
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
+                if (newValue!) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return CupertinoAlertDialog(
+                        title: Text("Warning",
+                            style: TextStyle(color: Colors.red)),
+                        content: Text(
+                            'You can not change your Location after requesting for Verification Process.'),
+                        actions: [
+                          TextButton(
+                            child: Text("Cancel",
+                                style: TextStyle(color: kMainPurple)),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                          TextButton(
+                            child: Text("Confirm",
+                                style: TextStyle(color: kMainPurple)),
+                            onPressed: () {
+                              setState(() {
+                                checkedValue = true;
+                              });
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else {
+                  setState(() {
+                    checkedValue = false;
+                  });
+                }
               },
               controlAffinity: ListTileControlAffinity.leading,
             ),
