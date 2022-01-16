@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kindful_organization/UI/navBar/donations.dart';
 import 'package:kindful_organization/UI/navBar/food.dart';
@@ -24,7 +25,7 @@ class _NavBarState extends State<NavBar> {
     final _kTabPages = <Widget>[
       Center(child: Food()),
       Center(child: Donations()),
-      Center(child: Profile()),
+      Center(child: Profile(FirebaseAuth.instance.currentUser)),
     ];
 
     final _kBottmonNavBarItems = <BottomNavigationBarItem>[

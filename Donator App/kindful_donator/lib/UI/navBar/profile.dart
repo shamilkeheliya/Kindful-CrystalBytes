@@ -80,7 +80,7 @@ class _ProfileState extends State<Profile> {
             ),
           ),
           const SizedBox(height: 20),
-          kProfileListTile(Icons.add_business_outlined, name, 'Business Name'),
+          kProfileListTile(Icons.add_business_outlined, name, 'Name'),
           kProfileListTile(Icons.map_outlined, district, 'District'),
           kProfileListTile(Icons.phone_outlined, phone, 'Phone Number'),
           kProfileListTile(Icons.alternate_email_outlined, email, 'Email'),

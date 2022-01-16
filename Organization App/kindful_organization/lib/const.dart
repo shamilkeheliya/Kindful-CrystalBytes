@@ -3,8 +3,34 @@ import 'package:flutter/material.dart';
 const kMainGreen = Color(0xFF59E287);
 const kMainPurple = Color(0xFF4840B8);
 
+const kDefaltIcon =
+    'https://firebasestorage.googleapis.com/v0/b/kindful-6b6dd.appspot.com/o/Kindful%2Fic_launcher.png?alt=media&token=03b29c45-0310-484b-8f8a-755a80391547';
+
+ListTile kProfileListTile(icon, title, tileName) {
+  return ListTile(
+    leading: Icon(icon),
+    title: Text(title),
+    subtitle: Text(tileName),
+  );
+}
+
+AppBar kAppBar(String title, bool backButton) {
+  return AppBar(
+    centerTitle: true,
+    automaticallyImplyLeading: backButton,
+    backgroundColor: kMainGreen,
+    title: Text(
+      title,
+      style: const TextStyle(
+        fontFamily: 'kindful',
+        color: kMainPurple,
+      ),
+    ),
+  );
+}
+
 const kFABShape =
-RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15)));
+    RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15)));
 
 const kFABIcon = Icon(Icons.add, color: kMainPurple, size: 40);
 
@@ -26,7 +52,7 @@ InputDecoration kTextInputDecoration(label, isValidate) {
   );
 }
 
-InputDecorator kDropDownButtonDecoration(label, dropDown){
+InputDecorator kDropDownButtonDecoration(label, dropDown) {
   return InputDecorator(
     decoration: InputDecoration(
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
@@ -36,10 +62,12 @@ InputDecorator kDropDownButtonDecoration(label, dropDown){
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label,style: const TextStyle(
-            fontSize: 15,
-            color: Colors.black54,
-          ),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 15,
+              color: Colors.black54,
+            ),
           ),
           dropDown,
         ],
@@ -65,7 +93,7 @@ Padding kTextTermsAndPrivacyPolicy() {
   );
 }
 
-Container kButtonBody(lable){
+Container kButtonBody(lable) {
   return Container(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(14),
@@ -85,15 +113,14 @@ Container kButtonBody(lable){
   );
 }
 
-class SnackBarClass{
-  static kShowSuccessSnackBar(context){
+class SnackBarClass {
+  static kShowSuccessSnackBar(context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: const Text('Success!'),
         action: SnackBarAction(
           label: 'OKAY',
-          onPressed: () {
-          },
+          onPressed: () {},
         ),
       ),
     );
@@ -129,5 +156,8 @@ const List<String> kDistricts = <String>[
 ];
 
 const List<String> kTypes = <String>[
-//TODO: Add organizations types
+  'Children\'s Home',
+  'Child Rehabilitation Center',
+  'Elders Home',
+  'Other Organisation',
 ];

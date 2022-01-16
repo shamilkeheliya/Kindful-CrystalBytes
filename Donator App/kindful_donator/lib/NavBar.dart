@@ -27,7 +27,7 @@ class _NavBarState extends State<NavBar> {
       Center(child: Feed()),
       Center(child: Donations()),
       Center(child: Search()),
-      Center(child: Profile((FirebaseAuth.instance.currentUser)),
+      Center(child: Profile(FirebaseAuth.instance.currentUser)),
     ];
 
     final _kBottmonNavBarItems = <BottomNavigationBarItem>[

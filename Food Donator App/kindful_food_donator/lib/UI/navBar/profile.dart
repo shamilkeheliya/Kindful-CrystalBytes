@@ -20,10 +20,10 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   String photoURL = kDefaltIcon;
-  String name = 'Name';
+  String name = 'Business Name';
   String city = 'City';
   String district = 'District';
-  String type = 'Type';
+  String type = 'Business Type';
   String phone = 'Phone Number';
   String email = 'Email';
   bool verify = false;
