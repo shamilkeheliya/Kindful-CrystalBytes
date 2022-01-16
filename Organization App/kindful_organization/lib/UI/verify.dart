@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kindful_organization/const.dart';
 import 'package:kindful_organization/location.dart';
@@ -17,6 +18,7 @@ class Verify extends StatefulWidget {
 
 class _VerifyState extends State<Verify> {
   bool isProcessing = false;
+  bool checkedValue = false;
 
   double latitude = 0;
   double longitude = 0;
@@ -50,22 +52,74 @@ class _VerifyState extends State<Verify> {
         inAsyncCall: isProcessing,
         child: ListView(
           children: [
+            //
+            // Location
+            //
             Row(
               children: [
                 locationShow('Latitude', latitude.toString()),
                 locationShow('Longitude', longitude.toString()),
               ],
             ),
+            //
+            // Refresh Location
+            //
             MaterialButton(
               onPressed: () => getLocation(),
               child: kButtonBody('Refresh Location'),
             ),
             const SizedBox(height: 10),
+            //
+            // Check Location on Map
+            //
             MaterialButton(
               onPressed: () {
                 MapUtils.openMap(latitude, longitude);
               },
               child: kButtonBody('Check Location on Map'),
+            ),
+            //
+            // Check Box
+            //
+            CheckboxListTile(
+              title: Text("My Location is Correct"),
+              value: checkedValue,
+              onChanged: (newValue) {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return CupertinoAlertDialog(
+                      title: Text("Confirm Location"),
+                      content: Text(
+                          'Please confirm your Location.\n\nYou can not change your Location after requesting for Verification Process.'),
+                      actions: [
+                        TextButton(
+                          child: Text("Cancel",
+                              style: TextStyle(color: kMainPurple)),
+                          onPressed: () {
+                            setState(() {
+                              checkedValue = false;
+                            });
+                            Navigator.pop(context);
+                          },
+                        ),
+                        TextButton(
+                          child: Text("Confirm",
+                              style: TextStyle(color: kMainPurple)),
+                          onPressed: () {
+                            setState(() {
+                              checkedValue = true;
+                            });
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              controlAffinity:
+                  ListTileControlAffinity.leading, //  <-- leading Checkbox
             ),
           ],
         ),
