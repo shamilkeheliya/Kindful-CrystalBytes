@@ -73,7 +73,8 @@ class _SignUpState extends State<SignUp> {
             Padding(
               padding: kTextFieldPadding,
               child: TextField(
-                decoration: kTextInputDecoration('Phone Number', phone.isValidate),
+                decoration:
+                    kTextInputDecoration('Phone Number', phone.isValidate),
                 cursorColor: kMainPurple,
                 keyboardType: TextInputType.number,
                 maxLength: 10,
@@ -95,12 +96,12 @@ class _SignUpState extends State<SignUp> {
                 DropdownButton(
                   underline: const SizedBox(),
                   value: selectedDistrict,
-                  onChanged: (value){
+                  onChanged: (value) {
                     setState(() {
                       selectedDistrict = value.toString();
                     });
                   },
-                  items: kDistricts.map((valueItem){
+                  items: kDistricts.map((valueItem) {
                     return DropdownMenuItem(
                       value: valueItem,
                       child: Text(valueItem),
@@ -135,10 +136,12 @@ class _SignUpState extends State<SignUp> {
   validateForm() {
     setState(() {
       name.isValidate = name.textEditingController.text.isEmpty ? true : false;
-      phone.isValidate = phone.textEditingController.text.isEmpty ? true : false;
+      phone.isValidate =
+          phone.textEditingController.text.isEmpty ? true : false;
 
-      if(name.textEditingController.text.isEmpty || phone.textEditingController.text.isEmpty){
-      }else{
+      if (name.textEditingController.text.isEmpty ||
+          phone.textEditingController.text.isEmpty) {
+      } else {
         setState(() {
           isProsessing = true;
         });
@@ -147,11 +150,12 @@ class _SignUpState extends State<SignUp> {
     });
   }
 
-  createAccount() async{
+  createAccount() async {
     Accounts accounts = Accounts();
-    bool result =await accounts.createAccount(widget.userID, name.variableName, widget.email, phone.variableName, selectedDistrict);
+    bool result = await accounts.createAccount(widget.userID, name.variableName,
+        widget.email, phone.variableName, selectedDistrict);
 
-    if(result){
+    if (result) {
       SnackBarClass.kShowSuccessSnackBar(context);
 
       Navigator.push(
@@ -160,8 +164,7 @@ class _SignUpState extends State<SignUp> {
           builder: (context) => NavBar(widget.userID),
         ),
       );
-    }
-    else{
+    } else {
       setState(() {
         isProsessing = false;
       });
@@ -171,11 +174,10 @@ class _SignUpState extends State<SignUp> {
           content: const Text('Cannot Create Account'),
           action: SnackBarAction(
             label: 'Retry',
-            onPressed: ()=> validateForm(),
+            onPressed: () => validateForm(),
           ),
         ),
       );
     }
-
   }
 }
