@@ -89,9 +89,10 @@ class _VerifyState extends State<Verify> {
                   context: context,
                   builder: (BuildContext context) {
                     return CupertinoAlertDialog(
-                      title: Text("Confirm Location"),
+                      title:
+                          Text("Warning", style: TextStyle(color: Colors.red)),
                       content: Text(
-                          'Please confirm your Location.\n\nYou can not change your Location after requesting for Verification Process.'),
+                          'You can not change your Location after requesting for Verification Process.'),
                       actions: [
                         TextButton(
                           child: Text("Cancel",
@@ -118,8 +119,7 @@ class _VerifyState extends State<Verify> {
                   },
                 );
               },
-              controlAffinity:
-                  ListTileControlAffinity.leading, //  <-- leading Checkbox
+              controlAffinity: ListTileControlAffinity.leading,
             ),
           ],
         ),
