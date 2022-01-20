@@ -126,6 +126,13 @@ class _VerifyState extends State<Verify> {
               },
               controlAffinity: ListTileControlAffinity.leading,
             ),
+            //
+            // Divider
+            //
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+              child: Divider(thickness: 1),
+            ),
           ],
         ),
       ),

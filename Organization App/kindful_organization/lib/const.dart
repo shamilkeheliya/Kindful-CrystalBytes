@@ -18,6 +18,7 @@ AppBar kAppBar(String title, bool backButton) {
   return AppBar(
     centerTitle: true,
     automaticallyImplyLeading: backButton,
+    iconTheme: IconThemeData(color: kMainPurple),
     backgroundColor: kMainGreen,
     title: Text(
       title,
