@@ -27,6 +27,7 @@ class _ProfileState extends State<Profile> {
   String phone = 'Phone Number';
   String email = 'Email';
   bool verify = false;
+  bool requestVerify = true;
 
   @override
   void initState() {
@@ -49,6 +50,7 @@ class _ProfileState extends State<Profile> {
         phone = documentSnapshot['phone'];
         email = documentSnapshot['email'];
         type = documentSnapshot['type'];
+        requestVerify = documentSnapshot['requestVerify'];
       });
     });
   }
@@ -93,19 +95,26 @@ class _ProfileState extends State<Profile> {
           kProfileListTile(Icons.star_outline, type, 'Business Type'),
           kProfileListTile(Icons.phone_outlined, phone, 'Phone Number'),
           kProfileListTile(Icons.alternate_email_outlined, email, 'Email'),
-          verify
-              ? kProfileListTile(Icons.verified_outlined, 'Verified ✔', '')
-              : MaterialButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Verify(widget.user.uid),
-                      ),
-                    );
-                  },
-                  child: kButtonBody('Request Verify'),
-                ),
+          Visibility(
+            visible: requestVerify,
+            child: verify
+                ? kProfileListTile(Icons.verified_outlined, 'Verified ✔', '')
+                : kProfileListTile(Icons.verified_outlined, 'Pending', ''),
+          ),
+          Visibility(
+            visible: !requestVerify,
+            child: MaterialButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Verify(widget.user.uid),
+                  ),
+                );
+              },
+              child: kButtonBody('Request Verify'),
+            ),
+          ),
           const SizedBox(height: 20),
         ],
       ),

@@ -23,7 +23,7 @@ class Verify extends StatefulWidget {
 }
 
 class _VerifyState extends State<Verify> {
-  FirebaseStorage _storage = FirebaseStorage.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   bool isProcessing = false;
   bool checkedValue = false;
@@ -433,8 +433,6 @@ class _VerifyState extends State<Verify> {
       setState(() {
         isProcessing = false;
       });
-
-      print(error);
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

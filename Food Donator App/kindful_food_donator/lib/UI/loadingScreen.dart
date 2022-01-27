@@ -14,7 +14,7 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  bool isLoading = false;
+  bool isLoading = true;
   Users users = Users();
 
   @override
