@@ -1,11 +1,14 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kindful_organization/const.dart';
 import 'package:kindful_organization/location.dart';
+import 'package:kindful_organization/navBar.dart';
 import 'package:kindful_organization/textField.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 // ignore: must_be_immutable
 class Verify extends StatefulWidget {
@@ -20,6 +23,8 @@ class Verify extends StatefulWidget {
 }
 
 class _VerifyState extends State<Verify> {
+  FirebaseStorage _storage = FirebaseStorage.instance;
+
   bool isProcessing = false;
   bool checkedValue = false;
 
@@ -39,7 +44,7 @@ class _VerifyState extends State<Verify> {
   @override
   void initState() {
     super.initState();
-    //getLocation();
+    getLocation();
   }
 
   getLocation() async {
@@ -155,7 +160,7 @@ class _VerifyState extends State<Verify> {
                 decoration: kTextInputDecoration(
                     'Registration Number', regNum.isValidate),
                 cursorColor: kMainPurple,
-                textCapitalization: TextCapitalization.words,
+                textCapitalization: TextCapitalization.characters,
                 maxLength: 30,
                 onChanged: (value) {
                   setState(() {
@@ -276,7 +281,9 @@ class _VerifyState extends State<Verify> {
             //
             divider(),
             MaterialButton(
-              onPressed: () {},
+              onPressed: () {
+                validateForm();
+              },
               child: kButtonBody('Submit'),
             ),
             SizedBox(height: 10),
@@ -284,6 +291,161 @@ class _VerifyState extends State<Verify> {
         ),
       ),
     );
+  }
+
+  validateForm() {
+    setState(() async {
+      regNum.isValidate =
+          regNum.textEditingController.text.isEmpty ? true : false;
+      guardianName.isValidate =
+          guardianName.textEditingController.text.isEmpty ? true : false;
+      guardianNIC.isValidate =
+          guardianNIC.textEditingController.text.isEmpty ? true : false;
+
+      if (regNum.textEditingController.text.isEmpty ||
+          guardianName.textEditingController.text.isEmpty ||
+          guardianNIC.textEditingController.text.length < 10 ||
+          !checkedValue ||
+          certificateImageFilePath == 'Certificate Image Empty' ||
+          nicFrontImageFilePath == 'NIC Front Image Empty' ||
+          nicBackImageFilePath == 'NIC Back Image Empty') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Fields cannot be Empty'),
+            action: SnackBarAction(
+              label: 'Okay',
+              onPressed: () {},
+            ),
+          ),
+        );
+      } else {
+        setState(() {
+          isProcessing = true;
+        });
+        uploadCertificateImage();
+      }
+    });
+  }
+
+  uploadCertificateImage() {
+    Reference certificateReference = _storage
+        .ref()
+        .child('organizations')
+        .child(widget.uid)
+        .child('certificate.${certificateImageFilePath.split('.').last}');
+
+    UploadTask certificateUploadTask =
+        certificateReference.putFile(_certificateImageFile);
+
+    certificateUploadTask.whenComplete(() async {
+      String certificateDownloadURL = await _storage
+          .ref()
+          .child('organizations')
+          .child(widget.uid)
+          .child('certificate.${certificateImageFilePath.split('.').last}')
+          .getDownloadURL();
+      setState(() {
+        certificateURL = certificateDownloadURL;
+        print('Certificate : $certificateURL');
+        uploadNICfrontImage();
+      });
+    });
+  }
+
+  uploadNICfrontImage() {
+    Reference nicFrontReference = _storage
+        .ref()
+        .child('organizations')
+        .child(widget.uid)
+        .child('nicFront.${nicFrontImageFilePath.split('.').last}');
+
+    UploadTask nicFrontUploadTask =
+        nicFrontReference.putFile(_nicFrontImageFile);
+
+    nicFrontUploadTask.whenComplete(() async {
+      String nicFrontDownloadURL = await _storage
+          .ref()
+          .child('organizations')
+          .child(widget.uid)
+          .child('nicFront.${nicFrontImageFilePath.split('.').last}')
+          .getDownloadURL();
+      setState(() {
+        nicFrontURL = nicFrontDownloadURL;
+        print('NIC Front : $nicFrontURL');
+        uplaodNICbackImage();
+      });
+    });
+  }
+
+  uplaodNICbackImage() {
+    Reference nicBackReference = _storage
+        .ref()
+        .child('organizations')
+        .child(widget.uid)
+        .child('nicBack.${nicBackImageFilePath.split('.').last}');
+
+    UploadTask nicBackUploadTask = nicBackReference.putFile(_nicBackImageFile);
+
+    nicBackUploadTask.whenComplete(() async {
+      String nicBackDownloadURL = await _storage
+          .ref()
+          .child('organizations')
+          .child(widget.uid)
+          .child('nicBack.${nicBackImageFilePath.split('.').last}')
+          .getDownloadURL();
+      setState(() {
+        nicBackURL = nicBackDownloadURL;
+        print('NIC Back : $nicBackURL');
+        requestVerify();
+      });
+    });
+  }
+
+  requestVerify() async {
+    await FirebaseFirestore.instance
+        .collection('organizations')
+        .doc(widget.uid)
+        .update({
+      'requestVerify': true,
+      'location': {'latitude': latitude, 'longitude': longitude},
+      'regNumber': regNum.variableName,
+      'regImage': certificateURL,
+      'guardian': {
+        'guardianName': guardianName.variableName,
+        'guardianNIC': guardianNIC.variableName,
+        'nicFront': nicFrontURL,
+        'nicBack': nicBackURL
+      }
+    }).then((value) {
+      setState(() {
+        isProcessing = false;
+      });
+
+      SnackBarClass.kShowSuccessSnackBar(context);
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => NavBar(widget.uid),
+        ),
+      );
+    }).catchError((error) {
+      setState(() {
+        isProcessing = false;
+      });
+
+      print(error);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Cannot Submit'),
+          action: SnackBarAction(
+            label: 'Retry',
+            onPressed: () => validateForm(),
+          ),
+        ),
+      );
+    });
   }
 
   Expanded locationShow(String title, String value) {
@@ -344,10 +506,5 @@ class _VerifyState extends State<Verify> {
         ),
       ),
     );
-  }
-
-  Future getImage() async {
-    final pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
-    setState(() {});
   }
 }
