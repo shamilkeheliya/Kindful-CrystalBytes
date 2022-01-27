@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kindful_donator/const.dart';
+import 'package:kindful_donator/firebase/accountClass.dart';
 
 // ignore: must_be_immutable
 class Profile extends StatefulWidget {
@@ -84,6 +85,34 @@ class _ProfileState extends State<Profile> {
           kProfileListTile(Icons.map_outlined, district, 'District'),
           kProfileListTile(Icons.phone_outlined, phone, 'Phone Number'),
           kProfileListTile(Icons.alternate_email_outlined, email, 'Email'),
+          const SizedBox(height: 10),
+          //
+          // Delete Account Button
+          //
+          MaterialButton(
+            onPressed: () {
+              Accounts account = Accounts();
+              account.deleteAccount(context, widget.user.uid);
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(14),
+                color: Colors.red,
+              ),
+              height: 30,
+              width: 200,
+              child: const Center(
+                child: Text(
+                  'Delete Account',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'kindful',
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+            ),
+          ),
           const SizedBox(height: 20),
         ],
       ),

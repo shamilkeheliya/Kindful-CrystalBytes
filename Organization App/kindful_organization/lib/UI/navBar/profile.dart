@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kindful_organization/UI/verify.dart';
 import 'package:kindful_organization/const.dart';
+import 'package:kindful_organization/firebase/accountClass.dart';
 
 // ignore: must_be_immutable
 class Profile extends StatefulWidget {
@@ -117,6 +118,34 @@ class _ProfileState extends State<Profile> {
                 );
               },
               child: kButtonBody('Request Verify'),
+            ),
+          ),
+          const SizedBox(height: 10),
+          //
+          // Delete Account Button
+          //
+          MaterialButton(
+            onPressed: () {
+              Accounts account = Accounts();
+              account.deleteAccount(context, widget.user.uid);
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(14),
+                color: Colors.red,
+              ),
+              height: 30,
+              width: 200,
+              child: const Center(
+                child: Text(
+                  'Delete Account',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'kindful',
+                    fontSize: 18,
+                  ),
+                ),
+              ),
             ),
           ),
           const SizedBox(height: 20),
