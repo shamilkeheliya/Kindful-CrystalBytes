@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kindful_food_donator/addFoodDonation.dart';
+import 'package:kindful_food_donator/const.dart';
 
 class Foods extends StatefulWidget {
   @override
@@ -8,6 +10,16 @@ class Foods extends StatefulWidget {
 class _FoodsState extends State<Foods> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => AddFoodDonation()));
+        },
+        shape: kFABShape,
+        backgroundColor: kMainGreen,
+        child: kFABIcon,
+      ),
+    );
   }
 }

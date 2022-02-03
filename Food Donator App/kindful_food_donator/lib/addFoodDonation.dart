@@ -1,7 +1,7 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:kindful_food_donator/const.dart';
 import 'package:kindful_food_donator/firebase/accountClass.dart';
-import 'package:kindful_food_donator/navBar.dart';
 import 'package:kindful_food_donator/textField.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
@@ -19,148 +19,188 @@ class AddFoodDonation extends StatefulWidget {
 
   // ignore: use_key_in_widget_constructors
 
-
   @override
   _AddFoodDonationState createState() => _AddFoodDonationState();
 }
 
 class _AddFoodDonationState extends State<AddFoodDonation> {
-
-  TextFieldForm quantity= TextFieldForm();
+  TextFieldForm title = TextFieldForm();
+  TextFieldForm quantity = TextFieldForm();
   TextFieldForm description = TextFieldForm();
-  TextFieldForm timelimit = TextFieldForm();
+  late TimeOfDay expireTime;
+  String selectedTime = '00:00';
 
-  String selectedStatus = kStatus[0];
   bool isProsessing = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          backgroundColor: kMainGreen,
-          title: const Text(
-            'Create Account',
-            style: TextStyle(
-              fontFamily: 'kindful',
-              color: kMainPurple,
-            ),
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: kMainGreen,
+        title: const Text(
+          'Add Foods',
+          style: TextStyle(
+            fontFamily: 'kindful',
+            color: kMainPurple,
           ),
         ),
-        body: ModalProgressHUD(
-            inAsyncCall: isProsessing,
-            child: ListView(
-                children: [
-                const SizedBox(height: 10),
+      ),
+      body: ModalProgressHUD(
+        inAsyncCall: isProsessing,
+        child: ListView(
+          children: [
+            const SizedBox(height: 10),
+            //
+            // Food Title
+            //
+            Padding(
+              padding: kTextFieldPadding,
+              child: TextField(
+                decoration:
+                    kTextInputDecoration('Food Titile', title.isValidate),
+                cursorColor: kMainPurple,
+                textCapitalization: TextCapitalization.words,
+                maxLength: 30,
+                onChanged: (value) {
+                  setState(() {
+                    title.variableName = value;
+                  });
+                },
+                controller: title.textEditingController,
+              ),
+            ),
+            //
+            // Description
+            //
+            Padding(
+              padding: kTextFieldPadding,
+              child: TextField(
+                decoration:
+                    kTextInputDecoration('Description', description.isValidate),
+                cursorColor: kMainPurple,
+                textCapitalization: TextCapitalization.words,
+                maxLength: 150,
+                maxLines: 3,
+                onChanged: (value) {
+                  setState(() {
+                    description.variableName = value;
+                  });
+                },
+                controller: description.textEditingController,
+              ),
+            ),
             //
             // Quantity
             //
-    Padding(
-    padding: kTextFieldPadding,
-    child: TextField(
-    decoration:
-    kTextInputDecoration('Quantity', quantity.isValidate),
-    cursorColor: kMainPurple,
-    keyboardType: TextInputType.number,
-    maxLength: 5,
-    onChanged: (value) {
-    setState(() {
-    quantity.variableName = value;
-    });
-    },
-    controller: quantity.textEditingController,
-    ),
-    ),
-    //
-    // Description
-    //
-    Padding(
-    padding: kTextFieldPadding,
-    child: TextField(
-    decoration:
-    kTextInputDecoration('Description', description.isValidate),
-    cursorColor: kMainPurple,
-    textCapitalization: TextCapitalization.words,
-    maxLength: 100,
-    onChanged: (value) {
-    setState(() {
-    description.variableName = value;
-    });
-    },
-    controller: description.textEditingController,
-    ),
-      //
-      //status
-      //
-    ),
-    Padding(
-    padding: kTextFieldPadding,
-    child: kDropDownButtonDecoration(
-    'Status',
-    DropdownButton(
-    underline: const SizedBox(),
-    value: selectedStatus,
-    onChanged: (value) {
-    setState(() {
-    selectedStatus = value.toString();
-    });
-    },
-    items: kDistricts.map((valueItem) {
-    return DropdownMenuItem(
-    value: valueItem,
-    child: Text(valueItem),
-    );
-    }).toList(),
-    ),
-    ),
-    ),
-    //
-    // Terms & Privacy Policy
-    //
-    kTextTermsAndPrivacyPolicy(),
-                  //
-                  //Button
-                  //
-                  MaterialButton(
-                    onPressed: () {
-                      validateForm();
-
-                    },
-                    child: kButtonBody('Add Donation'),
-                  ),
-                ],
+            Padding(
+              padding: kTextFieldPadding,
+              child: TextField(
+                decoration:
+                    kTextInputDecoration('Quantity', quantity.isValidate),
+                cursorColor: kMainPurple,
+                keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  setState(() {
+                    quantity.variableName = value;
+                  });
+                },
+                controller: quantity.textEditingController,
+              ),
             ),
+            //
+            // Time
+            //
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0),
+              child: MaterialButton(
+                onPressed: () {
+                  setState(() {
+                    //selectedTime = getTime().toString();
+                    //print(getTime().timeout(timeLimit));
+                  });
+                },
+                padding: EdgeInsets.zero,
+                child: Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                      border: Border.all(),
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          SizedBox(width: 5),
+                          Icon(Icons.lock_clock),
+                          SizedBox(width: 5),
+                          Text('Expire Time'),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text(selectedTime),
+                          SizedBox(width: 10),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            //
+            //Button
+            //
+            const SizedBox(height: 10),
+            MaterialButton(
+              onPressed: () {
+                //validateForm();
+              },
+              child: kButtonBody('Add Food Donation'),
+            ),
+          ],
         ),
+      ),
     );
+  }
+
+  Future<TimeOfDay?> getTime() {
+    Future<TimeOfDay?> selectedTime = showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    return selectedTime;
   }
 
   validateForm() {
     setState(() {
+      title.isValidate =
+          title.textEditingController.text.isEmpty ? true : false;
+      quantity.isValidate =
+          quantity.textEditingController.text.isEmpty ? true : false;
+      description.isValidate =
+          description.textEditingController.text.isEmpty ? true : false;
 
-    quantity.isValidate =
-    description.textEditingController.text.isEmpty ? true : false;
-
-
-    if (quantity.textEditingController.text.isEmpty ||
-    description.textEditingController.text.isEmpty ||)
-   {
-    } else {
-    setState(() {
-    isProsessing = true;
+      if (quantity.textEditingController.text.isEmpty ||
+          description.textEditingController.text.isEmpty) {
+      } else {
+        setState(() {
+          isProsessing = true;
+        });
+        //addDonation();
+      }
     });
-    addDonation();
-    }
-    });
-    }
- /* addDonation() async {
+  }
+  /*addDonation() async {
     Accounts accounts = Accounts();
-    bool result = await accounts.createAccount(
-        widget.UserID,
-        quantity.variableName,
-        widget.email,
-        description.variableName,
-        city.variableName,
-        selectedStatus,
-       );*/
+    // bool result = await accounts.createAccount(
+    //     widget.UserID,
+    //     quantity.variableName,
+    //     widget.email,
+    //     description.variableName,
+    //     city.variableName,
+    //     selectedStatus,
+    //    );
 
     if (result) {
       SnackBarClass.kShowSuccessSnackBar(context);
@@ -185,5 +225,5 @@ class _AddFoodDonationState extends State<AddFoodDonation> {
           ),
         ),
       );
-    }
-  }
+    }*/
+}

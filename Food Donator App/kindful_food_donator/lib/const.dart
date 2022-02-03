@@ -14,7 +14,7 @@ ListTile kProfileListTile(icon, title, tileName) {
   );
 }
 
-AppBar kAppBar(String title, bool backButton){
+AppBar kAppBar(String title, bool backButton) {
   return AppBar(
     centerTitle: true,
     automaticallyImplyLeading: backButton,
