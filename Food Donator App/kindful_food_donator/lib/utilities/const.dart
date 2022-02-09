@@ -36,6 +36,8 @@ const kFABIcon = Icon(Icons.add, color: kMainPurple, size: 40);
 
 const kTextFieldPadding = EdgeInsets.symmetric(vertical: 2.0, horizontal: 20.0);
 
+const kCardsPadding = EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0);
+
 InputDecoration kTextInputDecoration(label, isValidate) {
   return InputDecoration(
     labelText: label,

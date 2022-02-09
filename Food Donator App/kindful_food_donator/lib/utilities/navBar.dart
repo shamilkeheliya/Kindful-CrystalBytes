@@ -4,7 +4,7 @@ import 'package:kindful_food_donator/UI/navBar/Foods.dart';
 import 'package:kindful_food_donator/UI/navBar/feed.dart';
 import 'package:kindful_food_donator/UI/navBar/profile.dart';
 import 'package:kindful_food_donator/UI/navBar/search.dart';
-import 'package:kindful_food_donator/const.dart';
+import 'const.dart';
 
 class NavBar extends StatefulWidget {
   String userID = '';
@@ -24,7 +24,7 @@ class _NavBarState extends State<NavBar> {
   Widget build(BuildContext context) {
     final _kTabPages = <Widget>[
       Center(child: Feed()),
-      Center(child: Foods()),
+      Center(child: Foods(FirebaseAuth.instance.currentUser)),
       Center(child: Search()),
       Center(child: Profile(FirebaseAuth.instance.currentUser)),
     ];

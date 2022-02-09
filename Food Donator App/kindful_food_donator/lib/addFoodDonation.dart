@@ -1,20 +1,17 @@
-// ignore: file_names
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kindful_food_donator/const.dart';
-import 'package:kindful_food_donator/firebase/accountClass.dart';
-import 'package:kindful_food_donator/textField.dart';
+import 'utilities/const.dart';
+import 'utilities/navBar.dart';
+import 'utilities/textField.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class AddFoodDonation extends StatefulWidget {
   String userID = '';
-  String email = '';
 
   // ignore: use_key_in_widget_constructors
-  SignUp(userID, email) {
-    // ignore: prefer_initializing_formals
+  AddFoodDonation(userID) {
     this.userID = userID;
-    // ignore: prefer_initializing_formals
-    this.email = email;
   }
 
   // ignore: use_key_in_widget_constructors
@@ -27,8 +24,9 @@ class _AddFoodDonationState extends State<AddFoodDonation> {
   TextFieldForm title = TextFieldForm();
   TextFieldForm quantity = TextFieldForm();
   TextFieldForm description = TextFieldForm();
-  late TimeOfDay expireTime;
-  String selectedTime = '00:00';
+
+  String hours = kHours[0];
+  String min = kMins[0];
 
   bool isProsessing = false;
 
@@ -39,7 +37,7 @@ class _AddFoodDonationState extends State<AddFoodDonation> {
         centerTitle: true,
         backgroundColor: kMainGreen,
         title: const Text(
-          'Add Foods',
+          'Add Food Donation',
           style: TextStyle(
             fontFamily: 'kindful',
             color: kMainPurple,
@@ -79,7 +77,7 @@ class _AddFoodDonationState extends State<AddFoodDonation> {
                 decoration:
                     kTextInputDecoration('Description', description.isValidate),
                 cursorColor: kMainPurple,
-                textCapitalization: TextCapitalization.words,
+                textCapitalization: TextCapitalization.sentences,
                 maxLength: 150,
                 maxLines: 3,
                 onChanged: (value) {
@@ -112,36 +110,55 @@ class _AddFoodDonationState extends State<AddFoodDonation> {
             // Time
             //
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0),
-              child: MaterialButton(
-                onPressed: () {
-                  setState(() {
-                    //selectedTime = getTime().toString();
-                    //print(getTime().timeout(timeLimit));
-                  });
-                },
-                padding: EdgeInsets.zero,
-                child: Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                      border: Border.all(),
-                      borderRadius: BorderRadius.circular(5)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              padding: kTextFieldPadding,
+              child: Card(
+                elevation: 3,
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          SizedBox(width: 5),
-                          Icon(Icons.lock_clock),
-                          SizedBox(width: 5),
-                          Text('Expire Time'),
-                        ],
+                      const Text(
+                        'Expire Time',
+                        style: TextStyle(fontSize: 15),
                       ),
-                      Row(
-                        children: [
-                          Text(selectedTime),
-                          SizedBox(width: 10),
-                        ],
+                      const SizedBox(height: 10),
+                      kDropDownButtonDecoration(
+                        'Hours',
+                        DropdownButton(
+                          underline: const SizedBox(),
+                          value: hours,
+                          onChanged: (value) {
+                            setState(() {
+                              hours = value.toString();
+                            });
+                          },
+                          items: kHours.map((valueItem) {
+                            return DropdownMenuItem(
+                              value: valueItem,
+                              child: Text(valueItem),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      kDropDownButtonDecoration(
+                        'Minutes',
+                        DropdownButton(
+                          underline: const SizedBox(),
+                          value: min,
+                          onChanged: (value) {
+                            setState(() {
+                              min = value.toString();
+                            });
+                          },
+                          items: kMins.map((valueItem) {
+                            return DropdownMenuItem(
+                              value: valueItem,
+                              child: Text(valueItem),
+                            );
+                          }).toList(),
+                        ),
                       ),
                     ],
                   ),
@@ -154,7 +171,7 @@ class _AddFoodDonationState extends State<AddFoodDonation> {
             const SizedBox(height: 10),
             MaterialButton(
               onPressed: () {
-                //validateForm();
+                validateForm();
               },
               child: kButtonBody('Add Food Donation'),
             ),
@@ -162,14 +179,6 @@ class _AddFoodDonationState extends State<AddFoodDonation> {
         ),
       ),
     );
-  }
-
-  Future<TimeOfDay?> getTime() {
-    Future<TimeOfDay?> selectedTime = showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    );
-    return selectedTime;
   }
 
   validateForm() {
@@ -181,37 +190,40 @@ class _AddFoodDonationState extends State<AddFoodDonation> {
       description.isValidate =
           description.textEditingController.text.isEmpty ? true : false;
 
-      if (quantity.textEditingController.text.isEmpty ||
+      if (title.textEditingController.text.isEmpty ||
+          quantity.textEditingController.text.isEmpty ||
           description.textEditingController.text.isEmpty) {
       } else {
         setState(() {
           isProsessing = true;
         });
-        //addDonation();
+        addDonation();
       }
     });
   }
-  /*addDonation() async {
-    Accounts accounts = Accounts();
-    // bool result = await accounts.createAccount(
-    //     widget.UserID,
-    //     quantity.variableName,
-    //     widget.email,
-    //     description.variableName,
-    //     city.variableName,
-    //     selectedStatus,
-    //    );
 
-    if (result) {
+  addDonation() async {
+    FirebaseFirestore.instance.collection('food_donation').add({
+      'donator': widget.userID,
+      'title': title.variableName,
+      'description': description.variableName,
+      'quantity': quantity.variableName,
+      'expireTime': '$hours:$min',
+      'status': 'pending',
+      'date':
+          '${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}',
+    }).then((value) {
       SnackBarClass.kShowSuccessSnackBar(context);
-
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => NavBar(widget.userID),
         ),
       );
-    } else {
+      setState(() {
+        isProsessing = false;
+      });
+    }).catchError((error) {
       setState(() {
         isProsessing = false;
       });
@@ -225,5 +237,40 @@ class _AddFoodDonationState extends State<AddFoodDonation> {
           ),
         ),
       );
-    }*/
+    });
+  }
 }
+
+List<String> kHours = [
+  '00',
+  '01',
+  '02',
+  '03',
+  '04',
+  '05',
+  '06',
+  '07',
+  '08',
+  '09',
+  '10',
+  '11',
+  '12',
+  '13',
+  '14',
+  '15',
+  '16',
+  '17',
+  '18',
+  '19',
+  '20',
+  '21',
+  '22',
+  '23',
+];
+
+List<String> kMins = [
+  '00',
+  '15',
+  '30',
+  '45',
+];

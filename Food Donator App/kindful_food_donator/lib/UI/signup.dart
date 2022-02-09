@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kindful_food_donator/const.dart';
+import '../utilities/const.dart';
 import 'package:kindful_food_donator/firebase/accountClass.dart';
-import 'package:kindful_food_donator/navBar.dart';
-import 'package:kindful_food_donator/textField.dart';
+import '../utilities/navBar.dart';
+import '../utilities/textField.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 // ignore: must_be_immutable
