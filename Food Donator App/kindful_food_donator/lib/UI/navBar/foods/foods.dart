@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:kindful_food_donator/addFoodDonation.dart';
-import '../../utilities/const.dart';
-import 'package:kindful_food_donator/firebase/foodsFirebase.dart';
+import 'package:kindful_food_donator/UI/navBar/foods/addFoodDonation.dart';
+import 'package:kindful_food_donator/UI/navBar/foods/foodDonationsList.dart';
+import 'package:kindful_food_donator/utilities/const.dart';
 
 class Foods extends StatefulWidget {
   late User user;
@@ -20,7 +20,7 @@ class _FoodsState extends State<Foods> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(backgroundColor: kMainGreen, toolbarHeight: 0),
-      body: FoodDetails(),
+      body: FoodsDonationsList(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(

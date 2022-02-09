@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:kindful_food_donator/UI/navBar/Foods.dart';
+import '../UI/navBar/foods/foods.dart';
 import 'package:kindful_food_donator/UI/navBar/feed.dart';
 import 'package:kindful_food_donator/UI/navBar/profile.dart';
 import 'package:kindful_food_donator/UI/navBar/search.dart';

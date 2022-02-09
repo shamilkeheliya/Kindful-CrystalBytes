@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'utilities/const.dart';
-import 'utilities/navBar.dart';
-import 'utilities/textField.dart';
+import 'package:kindful_food_donator/utilities/const.dart';
+import 'package:kindful_food_donator/utilities/navBar.dart';
+import 'package:kindful_food_donator/utilities/textField.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class AddFoodDonation extends StatefulWidget {
