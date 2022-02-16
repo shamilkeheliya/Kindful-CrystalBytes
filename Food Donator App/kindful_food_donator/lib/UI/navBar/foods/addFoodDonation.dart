@@ -210,6 +210,7 @@ class _AddFoodDonationState extends State<AddFoodDonation> {
       'quantity': quantity.variableName,
       'expireTime': '$hours:$min',
       'status': 'pending',
+      'organization': '',
       'date':
           '${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}',
     }).then((value) {

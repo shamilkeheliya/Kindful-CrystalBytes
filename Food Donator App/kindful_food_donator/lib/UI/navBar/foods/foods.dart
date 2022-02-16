@@ -20,7 +20,7 @@ class _FoodsState extends State<Foods> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(backgroundColor: kMainGreen, toolbarHeight: 0),
-      body: FoodsDonationsList(),
+      body: FoodsDonationsList(widget.user.uid),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(

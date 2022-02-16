@@ -23,15 +23,23 @@ class _SingleFoodDonationState extends State<SingleFoodDonation> {
   String status = 'Status';
   String expireTime = 'Time';
   String date = 'Date';
+  String organization = '';
+
+  String organizationName = 'Organization Name';
+  String organizationCity = 'City';
+  String organizationDistrict = 'District';
 
   bool isProssesing = false;
 
   @override
   void initState() {
     super.initState();
+    getData();
+  }
 
+  void getData() {
     FirebaseFirestore.instance
-        .collection('food_donators')
+        .collection('food_donation')
         .doc(widget.docID)
         .get()
         .then((DocumentSnapshot documentSnapshot) {
@@ -42,8 +50,23 @@ class _SingleFoodDonationState extends State<SingleFoodDonation> {
         status = documentSnapshot['status'];
         expireTime = documentSnapshot['expireTime'];
         date = documentSnapshot['date'];
+        organization = documentSnapshot['organization'];
       });
     });
+
+    if (organization != '') {
+      FirebaseFirestore.instance
+          .collection('organizations')
+          .doc(organization)
+          .get()
+          .then((DocumentSnapshot documentSnapshot) {
+        setState(() {
+          organizationName = documentSnapshot['name'];
+          organizationCity = documentSnapshot['city'];
+          organizationDistrict = documentSnapshot['district'];
+        });
+      });
+    }
   }
 
   @override
@@ -90,7 +113,7 @@ class _SingleFoodDonationState extends State<SingleFoodDonation> {
                                   : status == 'get'
                                       ? 'Get'
                                       : 'Done',
-                              style: TextStyle(fontFamily: 'kindful'),
+                              style: const TextStyle(fontFamily: 'kindful'),
                             ),
                           ),
                         ),
@@ -108,6 +131,10 @@ class _SingleFoodDonationState extends State<SingleFoodDonation> {
                           ],
                         ),
                       ],
+                    ),
+                    Visibility(
+                      visible: status == 'pending',
+                      child: const SizedBox(height: 15),
                     ),
                     Visibility(
                       visible: status == 'pending',
@@ -158,7 +185,7 @@ class _SingleFoodDonationState extends State<SingleFoodDonation> {
                         style: ElevatedButton.styleFrom(primary: Colors.red),
                         child: const SizedBox(
                           width: double.infinity,
-                          child: Center(child: Text('Delete')),
+                          child: Center(child: Text('Delete Food Donation')),
                         ),
                       ),
                     ),

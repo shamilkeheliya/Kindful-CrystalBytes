@@ -5,19 +5,31 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:kindful_food_donator/UI/navBar/foods/singleFoodDonationView.dart';
 import 'package:kindful_food_donator/utilities/cardTextStyles.dart';
 import 'package:kindful_food_donator/utilities/const.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 // ignore: use_key_in_widget_constructors
 class FoodsDonationsList extends StatefulWidget {
+  late String userID;
+
+  FoodsDonationsList(userID) {
+    this.userID = userID;
+  }
+
   @override
-  _FoodsDonationsListState createState() => _FoodsDonationsListState();
+  _FoodsDonationsListState createState() => _FoodsDonationsListState(userID);
 }
 
 class _FoodsDonationsListState extends State<FoodsDonationsList> {
+  String userID = '';
+
+  _FoodsDonationsListState(userID) {
+    this.userID = userID;
+  }
+
   final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
       .collection('food_donation')
       // TODO: add where to filter user id
-      .orderBy('date')
+      //.where('donator', isEqualTo: userID)
+      .orderBy('date', descending: true)
       .snapshots();
 
   @override
@@ -44,6 +56,7 @@ class _FoodsDonationsListState extends State<FoodsDonationsList> {
             return Padding(
               padding: kCardsPadding,
               child: MaterialButton(
+                padding: EdgeInsets.zero,
                 onPressed: () {
                   Navigator.push(
                       context,
