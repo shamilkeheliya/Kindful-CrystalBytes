@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -15,20 +16,13 @@ class FoodsDonationsList extends StatefulWidget {
   }
 
   @override
-  _FoodsDonationsListState createState() => _FoodsDonationsListState(userID);
+  _FoodsDonationsListState createState() => _FoodsDonationsListState();
 }
 
 class _FoodsDonationsListState extends State<FoodsDonationsList> {
-  String userID = '';
-
-  _FoodsDonationsListState(userID) {
-    this.userID = userID;
-  }
-
   final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
       .collection('food_donation')
-      // TODO: add where to filter user id
-      //.where('donator', isEqualTo: userID)
+      .where('donator', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
       .orderBy('date', descending: true)
       .snapshots();
 
