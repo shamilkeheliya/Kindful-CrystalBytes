@@ -239,8 +239,8 @@ class _SingleFoodDonationState extends State<SingleFoodDonation> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    ViewOrganization(organization)));
+                                builder: (context) => ViewOrganization(
+                                    organization, organizationName)));
                       },
                       child: organizationDetailsCard(),
                     ),

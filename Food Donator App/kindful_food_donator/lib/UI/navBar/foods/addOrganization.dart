@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:kindful_food_donator/utilities/cardTextStyles.dart';
 import 'package:kindful_food_donator/utilities/const.dart';
 import 'package:kindful_food_donator/utilities/navBar.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -23,8 +22,10 @@ class _AddOrganizationToDonationState extends State<AddOrganizationToDonation> {
   Stream<QuerySnapshot> _organizationsStreamFilter =
       FirebaseFirestore.instance.collection('organizations').snapshots();
 
-  final Stream<QuerySnapshot> _organizationsStream =
-      FirebaseFirestore.instance.collection('organizations').snapshots();
+  final Stream<QuerySnapshot> _organizationsStream = FirebaseFirestore.instance
+      .collection('organizations')
+      .where('verify', isEqualTo: true)
+      .snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +43,7 @@ class _AddOrganizationToDonationState extends State<AddOrganizationToDonation> {
                     .collection('organizations')
                     .where('name', isGreaterThanOrEqualTo: value)
                     .where('name', isLessThan: value + 'z')
+                    .where('verify', isEqualTo: true)
                     .snapshots();
               });
             },
@@ -131,9 +133,12 @@ class _AddOrganizationToDonationState extends State<AddOrganizationToDonation> {
                         },
                       );
                     },
-                    child: ListTile(
-                      title: Text(data['name']),
-                      subtitle: Text('➥${data['city']}  ➥${data['district']}'),
+                    child: Card(
+                      child: ListTile(
+                        title: Text(data['name']),
+                        subtitle:
+                            Text('➥${data['city']}  ➥${data['district']}'),
+                      ),
                     ),
                   ),
                 );
