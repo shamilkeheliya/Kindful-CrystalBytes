@@ -82,18 +82,20 @@ class _FoodsDonationsListState extends State<FoodsDonationsList> {
                               decoration: BoxDecoration(
                                   color: data['status'] == 'pending'
                                       ? Colors.amber
-                                      : data['status'] == 'get'
-                                          ? Colors.lightBlue
-                                          : Colors.green,
+                                      : data['status'] == 'done'
+                                          ? Colors.green
+                                          : Colors.lightBlue,
                                   borderRadius: BorderRadius.circular(5)),
                               child: Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: Text(
                                   data['status'] == 'pending'
                                       ? 'Pending'
-                                      : data['status'] == 'get'
-                                          ? 'Get'
-                                          : 'Done',
+                                      : data['status'] == 'added'
+                                          ? 'Added'
+                                          : data['status'] == 'get'
+                                              ? 'Get'
+                                              : 'Done',
                                   style: TextStyle(fontFamily: 'kindful'),
                                 ),
                               ),

@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RestartWidget(
-      child: const MaterialApp(
+      child: MaterialApp(
         home: LoadingScreen(),
       ),
     );

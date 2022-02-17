@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../UI/navBar/foods/foods.dart';
 import 'package:kindful_food_donator/UI/navBar/feed.dart';
+import 'package:kindful_food_donator/UI/navBar/foods/foods.dart';
 import 'package:kindful_food_donator/UI/navBar/profile.dart';
-import '../UI/navBar/search/search.dart';
+import 'package:kindful_food_donator/UI/navBar/search/search.dart';
+import 'package:kindful_food_donator/UI/notVerified.dart';
 import 'const.dart';
 
 class NavBar extends StatefulWidget {
@@ -19,12 +21,31 @@ class NavBar extends StatefulWidget {
 
 class _NavBarState extends State<NavBar> {
   int _currentTabIndex = 0;
+  bool isVerified = true;
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseFirestore.instance
+        .collection('food_donators')
+        .doc(widget.userID)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      setState(() {
+        isVerified = documentSnapshot['verify'];
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final _kTabPages = <Widget>[
       Center(child: Feed()),
-      Center(child: Foods(FirebaseAuth.instance.currentUser)),
+      Center(
+        child: isVerified
+            ? Foods(FirebaseAuth.instance.currentUser)
+            : NotVerifiedPage(),
+      ),
       Center(child: Search()),
       Center(child: Profile(FirebaseAuth.instance.currentUser)),
     ];

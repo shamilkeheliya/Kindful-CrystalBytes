@@ -104,7 +104,7 @@ class _AddOrganizationToDonationState extends State<AddOrganizationToDonation> {
                                       .doc(widget.docID)
                                       .update({
                                     'organization': document.id,
-                                    'status': 'get',
+                                    'status': 'added',
                                   }).then((value) {
                                     Navigator.push(
                                         context,

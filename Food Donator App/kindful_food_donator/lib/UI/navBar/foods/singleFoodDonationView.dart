@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:kindful_food_donator/UI/navBar/foods/addOrganization.dart';
 import 'package:kindful_food_donator/UI/navBar/search/viewOrganization.dart';
 import 'package:kindful_food_donator/utilities/cardTextStyles.dart';
@@ -116,18 +114,20 @@ class _SingleFoodDonationState extends State<SingleFoodDonation> {
                     decoration: BoxDecoration(
                         color: status == 'pending'
                             ? Colors.amber
-                            : status == 'get'
-                                ? Colors.lightBlue
-                                : Colors.green,
+                            : status == 'done'
+                                ? Colors.green
+                                : Colors.lightBlue,
                         borderRadius: BorderRadius.circular(5)),
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Text(
                         status == 'pending'
                             ? 'Pending'
-                            : status == 'get'
-                                ? 'Get'
-                                : 'Done',
+                            : status == 'added'
+                                ? 'Added'
+                                : status == 'get'
+                                    ? 'Get'
+                                    : 'Done',
                         style: const TextStyle(fontFamily: 'kindful'),
                       ),
                     ),
