@@ -13,8 +13,6 @@ class Accounts {
       'email': email,
       'phone': phone,
       'district': district,
-      'verify': false,
-      'requestVerify': false
     }).then((value) {
       result = true;
     }).catchError((error) {

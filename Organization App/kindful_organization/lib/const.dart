@@ -160,5 +160,5 @@ const List<String> kTypes = <String>[
   'Children\'s Home',
   'Child Rehabilitation Center',
   'Elders Home',
-  'Other Organisation',
+  'Other Organization',
 ];

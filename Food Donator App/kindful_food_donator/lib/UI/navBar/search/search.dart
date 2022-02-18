@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:kindful_food_donator/UI/navBar/search/viewOrganization.dart';
+import 'package:kindful_food_donator/utilities/cardTextStyles.dart';
 import 'package:kindful_food_donator/utilities/const.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
@@ -87,10 +88,74 @@ class _SearchState extends State<Search> {
                       });
                     },
                     child: Card(
-                      child: ListTile(
-                        title: Text(data['name']),
-                        subtitle:
-                            Text('➥${data['city']}  ➥${data['district']}'),
+                      elevation: 3,
+                      child: Padding(
+                        padding: kCardsInsidePadding,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(data['name'], style: kCardTitleTextStyle),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Card(
+                                    child: Padding(
+                                      padding: kCardsInsidePadding,
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            'City',
+                                            style: kCardDescriptionTextStyle,
+                                          ),
+                                          Text(
+                                            data['city'],
+                                            style: kCardQuantityTextStyle,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Card(
+                                    child: Padding(
+                                      padding: kCardsInsidePadding,
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            'District',
+                                            style: kCardDescriptionTextStyle,
+                                          ),
+                                          Text(
+                                            data['district'],
+                                            style: kCardQuantityTextStyle,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Card(
+                                    child: Padding(
+                                      padding: kCardsInsidePadding,
+                                      child: Text(
+                                        data['type'],
+                                        style: kCardQuantityTextStyle,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

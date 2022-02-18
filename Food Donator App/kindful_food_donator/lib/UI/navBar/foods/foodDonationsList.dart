@@ -93,10 +93,10 @@ class _FoodsDonationsListState extends State<FoodsDonationsList> {
                                       ? 'Pending'
                                       : data['status'] == 'added'
                                           ? 'Added'
-                                          : data['status'] == 'get'
-                                              ? 'Get'
+                                          : data['status'] == 'accepted'
+                                              ? 'Accepted'
                                               : 'Done',
-                                  style: TextStyle(fontFamily: 'kindful'),
+                                  style: const TextStyle(fontFamily: 'kindful'),
                                 ),
                               ),
                             ),

@@ -1,22 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:kindful_food_donator/utilities/cardTextStyles.dart';
-import 'package:kindful_food_donator/utilities/const.dart';
-import 'package:kindful_food_donator/utilities/navBar.dart';
+import 'package:kindful_donator/UI/navBar/search/viewOrganization.dart';
+import 'package:kindful_donator/utilities/cardTextStyles.dart';
+import 'package:kindful_donator/utilities/const.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-class AddOrganizationToDonation extends StatefulWidget {
-  late String docID;
-  AddOrganizationToDonation(this.docID);
+class Search extends StatefulWidget {
   @override
-  _AddOrganizationToDonationState createState() =>
-      _AddOrganizationToDonationState();
+  _SearchState createState() => _SearchState();
 }
 
-class _AddOrganizationToDonationState extends State<AddOrganizationToDonation> {
+class _SearchState extends State<Search> {
   String searchKey = '';
   bool isLoading = false;
 
@@ -36,6 +32,7 @@ class _AddOrganizationToDonationState extends State<AddOrganizationToDonation> {
         appBar: AppBar(
           iconTheme: const IconThemeData(color: kMainPurple),
           backgroundColor: kMainGreen,
+          automaticallyImplyLeading: false,
           title: CupertinoTextField(
             onChanged: (value) {
               setState(() {
@@ -80,59 +77,15 @@ class _AddOrganizationToDonationState extends State<AddOrganizationToDonation> {
                   child: MaterialButton(
                     padding: EdgeInsets.zero,
                     onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return CupertinoAlertDialog(
-                            title: const Text("Are you sure?"),
-                            content: Text(
-                                'Do you want to add ${data['name']} to your donation?'),
-                            actions: [
-                              TextButton(
-                                child: const Text("No",
-                                    style: TextStyle(color: kMainPurple)),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                              TextButton(
-                                child: const Text("Yes",
-                                    style: TextStyle(color: kMainPurple)),
-                                onPressed: () {
-                                  setState(() {
-                                    isLoading = true;
-                                  });
-                                  FirebaseFirestore.instance
-                                      .collection('food_donation')
-                                      .doc(widget.docID)
-                                      .update({
-                                    'organization': document.id,
-                                    'status': 'added',
-                                  }).then((value) {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => NavBar(
-                                                FirebaseAuth.instance
-                                                    .currentUser?.uid)));
-                                    setState(() {
-                                      isLoading = false;
-                                      SnackBarClass.kShowSuccessSnackBar(
-                                          context);
-                                    });
-                                  }).catchError((e) {
-                                    Navigator.pop(context);
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text('Adding Failed')),
-                                    );
-                                  });
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
+                      setState(() {
+                        isLoading = true;
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ViewOrganization(
+                                    document.id, data['name'])));
+                        isLoading = false;
+                      });
                     },
                     child: Card(
                       elevation: 3,

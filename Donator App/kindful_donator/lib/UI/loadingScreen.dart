@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:kindful_donator/NavBar.dart';
+import '../utilities/NavBar.dart';
 import 'package:kindful_donator/UI/signup.dart';
-import 'package:kindful_donator/const.dart';
+import '../utilities/const.dart';
 import 'package:kindful_donator/firebase/userClass.dart';
 
 class LoadingScreen extends StatefulWidget {

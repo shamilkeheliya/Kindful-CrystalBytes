@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kindful_donator/NavBar.dart';
-import 'package:kindful_donator/const.dart';
+import '../utilities/NavBar.dart';
+import '../utilities/const.dart';
 import 'package:kindful_donator/firebase/accountClass.dart';
-import 'package:kindful_donator/textField.dart';
+import '../utilities/textField.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 // ignore: must_be_immutable

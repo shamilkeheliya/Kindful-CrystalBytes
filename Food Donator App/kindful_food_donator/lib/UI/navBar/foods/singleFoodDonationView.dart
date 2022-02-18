@@ -125,8 +125,8 @@ class _SingleFoodDonationState extends State<SingleFoodDonation> {
                             ? 'Pending'
                             : status == 'added'
                                 ? 'Added'
-                                : status == 'get'
-                                    ? 'Get'
+                                : status == 'accepted'
+                                    ? 'Accepted'
                                     : 'Done',
                         style: const TextStyle(fontFamily: 'kindful'),
                       ),
@@ -255,35 +255,50 @@ class _SingleFoodDonationState extends State<SingleFoodDonation> {
     return SizedBox(
       width: double.infinity,
       child: Card(
-        elevation: 5,
         child: Padding(
           padding: kCardsInsidePadding,
           child: Column(
             children: [
               Text(organizationName, style: kCardTitleTextStyle),
-              const SizedBox(height: 15),
               Row(
                 children: [
-                  Text(
-                    'City : ',
-                    style: kCardDescriptionTextStyle,
+                  Expanded(
+                    child: Card(
+                      child: Padding(
+                        padding: kCardsInsidePadding,
+                        child: Column(
+                          children: [
+                            Text(
+                              'City',
+                              style: kCardDescriptionTextStyle,
+                            ),
+                            Text(
+                              organizationCity,
+                              style: kCardQuantityTextStyle,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
-                  Text(
-                    organizationCity,
-                    style: kCardQuantityTextStyle,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 5),
-              Row(
-                children: [
-                  Text(
-                    'District : ',
-                    style: kCardDescriptionTextStyle,
-                  ),
-                  Text(
-                    organizationDistrict,
-                    style: kCardQuantityTextStyle,
+                  Expanded(
+                    child: Card(
+                      child: Padding(
+                        padding: kCardsInsidePadding,
+                        child: Column(
+                          children: [
+                            Text(
+                              'District',
+                              style: kCardDescriptionTextStyle,
+                            ),
+                            Text(
+                              organizationDistrict,
+                              style: kCardQuantityTextStyle,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),

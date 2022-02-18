@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:kindful_donator/UI/navBar/donations.dart';
 import 'package:kindful_donator/UI/navBar/feed.dart';
 import 'package:kindful_donator/UI/navBar/profile.dart';
-import 'package:kindful_donator/UI/navBar/search.dart';
-import 'package:kindful_donator/const.dart';
+import 'package:kindful_donator/UI/navBar/search/search.dart';
+import 'const.dart';
 
 // ignore: must_be_immutable
 class NavBar extends StatefulWidget {
