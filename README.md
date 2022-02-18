@@ -2,8 +2,9 @@
 
 ## Project Details
 - Group Name - **Crystal Bytes**
-- Project Type - **Computing Group Project**
-- Subject - **PUSL2021**
+- Project Type - **Group Project**
+- Subject - **Computing Group Project**
+- Subject Code - **PUSL2021**
 - Batch - **PLY Batch 09**
 - Year - **2021/2022**
 - University - [**University of Plymouth**](https://www.plymouth.ac.uk/)
