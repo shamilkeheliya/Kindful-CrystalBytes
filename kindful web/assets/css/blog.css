@@ -93,7 +93,7 @@ nav.menu ul a {
 }
 
 nav.menu ul a:hover {
-  background:#048654;
+  background:#59E287FF;
   text-decoration: underline;
 }
 
@@ -111,7 +111,7 @@ nav.menu ul a:hover {
 }
 
 .sidebar .widget:hover {
-  border-bottom: 2px solid #4840B8FF;
+  border-bottom: 2px solid white;
 }
 
 .sidebar .widget h2 {
