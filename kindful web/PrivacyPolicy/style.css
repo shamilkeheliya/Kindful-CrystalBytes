@@ -1,0 +1,46 @@
+body,
+    html {
+        height: 100%;
+        background-color: #ffffff;
+    }
+
+    p,
+    li,
+    ul,
+    h1 {
+        color: #4840B8;
+    }
+ p,ul {
+        font-size: 115%;
+    }
+
+    .fluid-container {
+        border: 2px solid #59E287;
+        border-radius: 18px;
+        margin-right: 2%;
+        margin-left: 2%;
+        margin-bottom: 5%;
+        margin-top: 5%;
+        background-color: #59E287;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        transition: 0.3s;
+    }
+      
+      .container {
+        margin-right: 2%;
+        margin-left: 2%;
+        margin-bottom: 2%;
+        margin-top: 2%;
+      }
+
+    .topDiv{
+        height: 100px;
+        background-color: #4840B8;
+        width: 100%;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        transition: 0.3s;
+    }
+
+    .bottomDiv{
+        height: 5px;
+    }
