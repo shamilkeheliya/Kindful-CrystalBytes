@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kindful_organization/const.dart';
+import '../../utilities/const.dart';
 
 class Food extends StatefulWidget {
   const Food({Key? key}) : super(key: key);
@@ -15,12 +15,19 @@ class _FoodState extends State<Food> {
     //   Container(height: 200,width: double.infinity,color: Colors.red,)
     // ],));
     return Scaffold(
-      appBar: AppBar(toolbarHeight: 0,
+      appBar: AppBar(
+        toolbarHeight: 0,
         backgroundColor: kMainGreen,
       ),
-      body: ListView(children: [
-          Container(height: 200,width: double.infinity,color: Colors.red,)
-        ],),
+      body: ListView(
+        children: [
+          Container(
+            height: 200,
+            width: double.infinity,
+            color: Colors.red,
+          )
+        ],
+      ),
     );
   }
 }

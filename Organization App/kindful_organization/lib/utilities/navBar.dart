@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:kindful_organization/UI/navBar/donations.dart';
+import '../UI/navBar/donations/donations.dart';
 import 'package:kindful_organization/UI/navBar/food.dart';
 import 'package:kindful_organization/UI/navBar/profile.dart';
-import 'package:kindful_organization/const.dart';
+import 'package:kindful_organization/UI/notVerified.dart';
+import 'const.dart';
 
 // ignore: must_be_immutable
 class NavBar extends StatefulWidget {
@@ -19,12 +21,31 @@ class NavBar extends StatefulWidget {
 
 class _NavBarState extends State<NavBar> {
   int _currentTabIndex = 0;
+  bool isVerified = true;
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseFirestore.instance
+        .collection('organizations')
+        .doc(widget.userID)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      setState(() {
+        isVerified = documentSnapshot['verify'];
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final _kTabPages = <Widget>[
       Center(child: Food()),
-      Center(child: Donations()),
+      Center(
+        child: isVerified
+            ? Donations(FirebaseAuth.instance.currentUser)
+            : NotVerifiedPage(),
+      ),
       Center(child: Profile(FirebaseAuth.instance.currentUser)),
     ];
 

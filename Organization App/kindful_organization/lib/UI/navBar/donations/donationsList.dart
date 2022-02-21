@@ -1,28 +1,26 @@
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:kindful_food_donator/UI/navBar/foods/singleFoodDonationView.dart';
-import 'package:kindful_food_donator/utilities/cardTextStyles.dart';
-import 'package:kindful_food_donator/utilities/const.dart';
+import 'package:kindful_organization/UI/navBar/donations/singleDonationView.dart';
+import 'package:kindful_organization/utilities/cardTextStyles.dart';
+import 'package:kindful_organization/utilities/const.dart';
 
-// ignore: use_key_in_widget_constructors
-class FoodsDonationsList extends StatefulWidget {
+class DonationsList extends StatefulWidget {
   late String userID;
 
-  FoodsDonationsList(userID) {
+  DonationsList(userID) {
     this.userID = userID;
   }
 
   @override
-  _FoodsDonationsListState createState() => _FoodsDonationsListState();
+  _DonationsListState createState() => _DonationsListState();
 }
 
-class _FoodsDonationsListState extends State<FoodsDonationsList> {
+class _DonationsListState extends State<DonationsList> {
   final Stream<QuerySnapshot> _Stream = FirebaseFirestore.instance
-      .collection('food_donation')
-      .where('donator', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+      .collection('donation')
+      .where('organization', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
       .orderBy('date', descending: true)
       .snapshots();
 
@@ -55,8 +53,7 @@ class _FoodsDonationsListState extends State<FoodsDonationsList> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              SingleFoodDonation(document.id)));
+                          builder: (context) => SingleDonation(document.id)));
                 },
                 child: Card(
                   elevation: 5,

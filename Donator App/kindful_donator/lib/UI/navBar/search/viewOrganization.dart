@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:kindful_donator/UI/navBar/search/reportUser.dart';
 import 'package:kindful_donator/utilities/cardTextStyles.dart';
 import 'package:kindful_donator/utilities/const.dart';
 import 'package:maps_launcher/maps_launcher.dart';
@@ -7,7 +9,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 class ViewOrganization extends StatefulWidget {
   late String organizationID, organizationName;
-  ViewOrganization(this.organizationID, this.organizationName);
+  late bool showReportUSer;
+  ViewOrganization(
+      this.organizationID, this.organizationName, this.showReportUSer);
   @override
   _ViewOrganizationState createState() => _ViewOrganizationState();
 }
@@ -122,6 +126,22 @@ class _ViewOrganizationState extends State<ViewOrganization> {
                 MapsLauncher.launchCoordinates(latitude, longitude);
               },
               child: kButtonBody('See Location'),
+            ),
+            const SizedBox(height: 10),
+            Visibility(
+              visible: widget.showReportUSer,
+              child: TextButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ReportUser(
+                              FirebaseAuth.instance.currentUser!.uid,
+                              widget.organizationID,
+                              widget.organizationName)));
+                },
+                child: const Text('Report Organization'),
+              ),
             ),
           ],
         ),

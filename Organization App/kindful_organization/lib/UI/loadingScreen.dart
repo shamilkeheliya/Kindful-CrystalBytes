@@ -2,9 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:kindful_organization/UI/signup.dart';
-import 'package:kindful_organization/const.dart';
+import '../utilities/const.dart';
 import 'package:kindful_organization/firebase/userClass.dart';
-import 'package:kindful_organization/navBar.dart';
+import '../utilities/navBar.dart';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({Key? key}) : super(key: key);

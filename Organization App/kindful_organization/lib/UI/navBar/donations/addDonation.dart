@@ -1,32 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kindful_food_donator/utilities/const.dart';
-import 'package:kindful_food_donator/utilities/navBar.dart';
-import 'package:kindful_food_donator/utilities/textField.dart';
+import 'package:kindful_organization/utilities/const.dart';
+import 'package:kindful_organization/utilities/navBar.dart';
+import 'package:kindful_organization/utilities/textField.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-class AddFoodDonation extends StatefulWidget {
+class AddDonation extends StatefulWidget {
   String userID = '';
 
   // ignore: use_key_in_widget_constructors
-  AddFoodDonation(userID) {
+  AddDonation(userID) {
     this.userID = userID;
   }
 
   // ignore: use_key_in_widget_constructors
 
   @override
-  _AddFoodDonationState createState() => _AddFoodDonationState();
+  _AddDonationState createState() => _AddDonationState();
 }
 
-class _AddFoodDonationState extends State<AddFoodDonation> {
+class _AddDonationState extends State<AddDonation> {
   TextFieldForm title = TextFieldForm();
   TextFieldForm quantity = TextFieldForm();
   TextFieldForm description = TextFieldForm();
-
-  String hours = kHours[0];
-  String min = kMins[0];
 
   bool isProsessing = false;
 
@@ -50,13 +47,13 @@ class _AddFoodDonationState extends State<AddFoodDonation> {
           children: [
             const SizedBox(height: 10),
             //
-            // Food Title
+            // Title
             //
             Padding(
               padding: kTextFieldPadding,
               child: TextField(
                 decoration:
-                    kTextInputDecoration('Food Title', title.isValidate),
+                    kTextInputDecoration('Donation Title', title.isValidate),
                 cursorColor: kMainPurple,
                 textCapitalization: TextCapitalization.words,
                 maxLength: 30,
@@ -107,65 +104,6 @@ class _AddFoodDonationState extends State<AddFoodDonation> {
               ),
             ),
             //
-            // Time
-            //
-            Padding(
-              padding: kTextFieldPadding,
-              child: Card(
-                elevation: 3,
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Expire Time',
-                        style: TextStyle(fontSize: 15),
-                      ),
-                      const SizedBox(height: 10),
-                      kDropDownButtonDecoration(
-                        'Hours',
-                        DropdownButton(
-                          underline: const SizedBox(),
-                          value: hours,
-                          onChanged: (value) {
-                            setState(() {
-                              hours = value.toString();
-                            });
-                          },
-                          items: kHours.map((valueItem) {
-                            return DropdownMenuItem(
-                              value: valueItem,
-                              child: Text(valueItem),
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      kDropDownButtonDecoration(
-                        'Minutes',
-                        DropdownButton(
-                          underline: const SizedBox(),
-                          value: min,
-                          onChanged: (value) {
-                            setState(() {
-                              min = value.toString();
-                            });
-                          },
-                          items: kMins.map((valueItem) {
-                            return DropdownMenuItem(
-                              value: valueItem,
-                              child: Text(valueItem),
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            //
             //Button
             //
             const SizedBox(height: 10),
@@ -173,7 +111,7 @@ class _AddFoodDonationState extends State<AddFoodDonation> {
               onPressed: () {
                 validateForm();
               },
-              child: kButtonBody('Add Food Donation'),
+              child: kButtonBody('Add Donation'),
             ),
           ],
         ),
@@ -203,14 +141,13 @@ class _AddFoodDonationState extends State<AddFoodDonation> {
   }
 
   addDonation() async {
-    FirebaseFirestore.instance.collection('food_donation').add({
-      'donator': widget.userID,
+    FirebaseFirestore.instance.collection('donation').add({
+      'organization': widget.userID,
       'title': title.variableName,
       'description': description.variableName,
       'quantity': quantity.variableName,
-      'expireTime': '$hours:$min',
       'status': 'pending',
-      'organization': '',
+      'donator': '',
       'date':
           '${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}',
     }).then((value) {
@@ -241,37 +178,3 @@ class _AddFoodDonationState extends State<AddFoodDonation> {
     });
   }
 }
-
-List<String> kHours = [
-  '00',
-  '01',
-  '02',
-  '03',
-  '04',
-  '05',
-  '06',
-  '07',
-  '08',
-  '09',
-  '10',
-  '11',
-  '12',
-  '13',
-  '14',
-  '15',
-  '16',
-  '17',
-  '18',
-  '19',
-  '20',
-  '21',
-  '22',
-  '23',
-];
-
-List<String> kMins = [
-  '00',
-  '15',
-  '30',
-  '45',
-];
