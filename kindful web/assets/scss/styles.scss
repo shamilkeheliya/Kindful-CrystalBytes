@@ -299,40 +299,9 @@ img{
 }
 
 /*========== blog==========*/
-.blog{
-    &__container{
-        grid-template-columns: repeat(2, 1fr);
-        justify-content: center;
-    }
-    &__content{
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        background-color: var(--container-color);
-        border-radius: .5rem;
-        box-shadow: 0 2px 4px rgba(3, 74, 40, 0.15);
-        padding: .75rem;
-    }
-    &__img{
-        width: 100px;
-        align-self: center;
-        margin-bottom: var(--mb-2);
-    }
-    &__name, &__preci{
-        font-weight: var(--font-semi-bold);
-        color: var(--title-color);
-    }
-    &__name{
-        font-size: var(--normal-font-size);
-    }
-    &__detail, &__preci{
-        font-size: var(--small-font-size);
-    }
-    &__detail{
-        margin-bottom: var(--mb-1);
-    }
+
    
-}
+
 
 /*========== APP ==========*/
 .app{
