@@ -40,7 +40,7 @@ class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
     final _kTabPages = <Widget>[
-      Center(child: Feed()),
+      //Center(child: Feed()),
       Center(
         child: isVerified
             ? Foods(FirebaseAuth.instance.currentUser)
@@ -51,10 +51,10 @@ class _NavBarState extends State<NavBar> {
     ];
 
     final _kBottmonNavBarItems = <BottomNavigationBarItem>[
-      const BottomNavigationBarItem(
-        icon: Icon(Icons.backup_table_outlined),
-        label: 'Feed',
-      ),
+      // const BottomNavigationBarItem(
+      //   icon: Icon(Icons.backup_table_outlined),
+      //   label: 'Feed',
+      // ),
       const BottomNavigationBarItem(
         icon: Icon(Icons.fastfood_outlined),
         label: 'Foods',

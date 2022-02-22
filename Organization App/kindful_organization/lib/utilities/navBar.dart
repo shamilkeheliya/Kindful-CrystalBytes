@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../UI/navBar/donations/donations.dart';
-import 'package:kindful_organization/UI/navBar/food.dart';
+import 'package:kindful_organization/UI/navBar/donations/donations.dart';
+import 'package:kindful_organization/UI/navBar/foods/foods.dart';
 import 'package:kindful_organization/UI/navBar/profile.dart';
 import 'package:kindful_organization/UI/notVerified.dart';
 import 'const.dart';
@@ -40,7 +40,7 @@ class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
     final _kTabPages = <Widget>[
-      Center(child: Food()),
+      Center(child: Food(FirebaseAuth.instance.currentUser)),
       Center(
         child: isVerified
             ? Donations(FirebaseAuth.instance.currentUser)

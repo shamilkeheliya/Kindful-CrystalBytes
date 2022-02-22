@@ -34,7 +34,7 @@ class _AddDonationState extends State<AddDonation> {
         centerTitle: true,
         backgroundColor: kMainGreen,
         title: const Text(
-          'Add Food Donation',
+          'Add Donation',
           style: TextStyle(
             fontFamily: 'kindful',
             color: kMainPurple,

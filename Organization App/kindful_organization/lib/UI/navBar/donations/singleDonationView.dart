@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kindful_organization/UI/navBar/donations/addDonator.dart';
 import 'package:kindful_organization/UI/navBar/donations/viewDonator.dart';
 import 'package:kindful_organization/utilities/cardTextStyles.dart';
 import 'package:kindful_organization/utilities/const.dart';
+import 'package:kindful_organization/utilities/navBar.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class SingleDonation extends StatefulWidget {
@@ -182,10 +184,16 @@ class _SingleDonationState extends State<SingleDonation> {
                                     .doc(widget.docID)
                                     .delete()
                                     .then((value) {
-                                  SnackBarClass.kShowSuccessSnackBar(context);
                                   setState(() {
                                     isProssesing = false;
                                   });
+                                  SnackBarClass.kShowSuccessSnackBar(context);
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (contex) => NavBar(
+                                              FirebaseAuth
+                                                  .instance.currentUser?.uid)));
                                 });
                               },
                             ),
