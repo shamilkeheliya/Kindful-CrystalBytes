@@ -29,7 +29,7 @@ class MapUtils {
     //   await launch(googleUrl);
     // } else {
     //   throw 'Could not open the map.';
-    // }
+    // } NSE/CP/KA/2021/52
 
     MapsLauncher.launchCoordinates(latitude, longitude);
   }
