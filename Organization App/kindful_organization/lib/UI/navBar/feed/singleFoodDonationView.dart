@@ -2,11 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kindful_food_donator/UI/navBar/foods/addOrganization.dart';
-import 'package:kindful_food_donator/UI/navBar/search/viewOrganization.dart';
-import 'package:kindful_food_donator/utilities/cardTextStyles.dart';
-import 'package:kindful_food_donator/utilities/const.dart';
-import 'package:kindful_food_donator/utilities/navBar.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class SingleFoodDonation extends StatefulWidget {
@@ -29,9 +24,11 @@ class _SingleFoodDonationState extends State<SingleFoodDonation> {
   String date = 'Date';
   String organization = '';
 
-  String organizationName = 'Organization Name';
-  String organizationCity = 'City';
-  String organizationDistrict = 'District';
+  String donatorName = 'Donator Name';
+  String donatorCity = 'City';
+  String donatorDistrict = 'District';
+  String donatorType = 'Business Type';
+  String donatorPhone = 'Phone Number';
 
   bool isProssesing = false;
 

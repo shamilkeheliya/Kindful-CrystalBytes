@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kindful_organization/UI/navBar/donations/donations.dart';
+import 'package:kindful_organization/UI/navBar/feed/feed.dart';
 import 'package:kindful_organization/UI/navBar/foods/foods.dart';
 import 'package:kindful_organization/UI/navBar/profile.dart';
 import 'package:kindful_organization/UI/notVerified.dart';
@@ -40,6 +41,7 @@ class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
     final _kTabPages = <Widget>[
+      Center(child: Feed()),
       Center(child: Food(FirebaseAuth.instance.currentUser)),
       Center(
         child: isVerified
@@ -50,6 +52,10 @@ class _NavBarState extends State<NavBar> {
     ];
 
     final _kBottmonNavBarItems = <BottomNavigationBarItem>[
+      const BottomNavigationBarItem(
+        icon: Icon(Icons.backup_table_outlined),
+        label: 'Feed',
+      ),
       const BottomNavigationBarItem(
         icon: Icon(Icons.fastfood_outlined),
         label: 'Foods',

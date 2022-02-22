@@ -184,16 +184,16 @@ class _SingleDonationState extends State<SingleDonation> {
                                     .doc(widget.docID)
                                     .delete()
                                     .then((value) {
-                                  setState(() {
-                                    isProssesing = false;
-                                  });
-                                  SnackBarClass.kShowSuccessSnackBar(context);
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (contex) => NavBar(
                                               FirebaseAuth
                                                   .instance.currentUser?.uid)));
+                                  setState(() {
+                                    isProssesing = false;
+                                  });
+                                  SnackBarClass.kShowSuccessSnackBar(context);
                                 });
                               },
                             ),

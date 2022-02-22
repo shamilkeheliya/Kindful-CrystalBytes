@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:kindful_donator/UI/navBar/donations.dart';
-import 'package:kindful_donator/UI/navBar/feed.dart';
+import '../UI/navBar/donations/donations.dart';
+import '../UI/navBar/feed/feed.dart';
 import 'package:kindful_donator/UI/navBar/profile.dart';
 import 'package:kindful_donator/UI/navBar/search/search.dart';
 import 'const.dart';
