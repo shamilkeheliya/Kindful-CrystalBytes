@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:kindful_organization/utilities/cardTextStyles.dart';
+import 'package:kindful_organization/utilities/const.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SingleFoodDonation extends StatefulWidget {
   late String docID;
@@ -22,7 +24,7 @@ class _SingleFoodDonationState extends State<SingleFoodDonation> {
   String status = 'Status';
   String expireTime = 'Time';
   String date = 'Date';
-  String organization = '';
+  String donator = '';
 
   String donatorName = 'Donator Name';
   String donatorCity = 'City';
@@ -51,23 +53,23 @@ class _SingleFoodDonationState extends State<SingleFoodDonation> {
         status = documentSnapshot['status'];
         expireTime = documentSnapshot['expireTime'];
         date = documentSnapshot['date'];
-        organization = documentSnapshot['organization'];
+        donator = documentSnapshot['donator'];
       });
     });
 
-    if (organization != '') {
-      FirebaseFirestore.instance
-          .collection('organizations')
-          .doc(organization)
-          .get()
-          .then((DocumentSnapshot documentSnapshot) {
-        setState(() {
-          organizationName = documentSnapshot['name'];
-          organizationCity = documentSnapshot['city'];
-          organizationDistrict = documentSnapshot['district'];
-        });
+    await FirebaseFirestore.instance
+        .collection('food_donators')
+        .doc(donator)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      setState(() {
+        donatorName = documentSnapshot['name'];
+        donatorCity = documentSnapshot['city'];
+        donatorDistrict = documentSnapshot['district'];
+        donatorType = documentSnapshot['type'];
+        donatorPhone = documentSnapshot['phone'];
       });
-    }
+    });
   }
 
   @override
@@ -79,7 +81,7 @@ class _SingleFoodDonationState extends State<SingleFoodDonation> {
         child: ListView(
           children: [
             mainCard(),
-            organizationCard(),
+            donatorCard(),
           ],
         ),
       ),
@@ -109,25 +111,20 @@ class _SingleFoodDonationState extends State<SingleFoodDonation> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        color: status == 'pending'
-                            ? Colors.amber
-                            : status == 'done'
-                                ? Colors.green
-                                : Colors.lightBlue,
-                        borderRadius: BorderRadius.circular(5)),
+                  Card(
                     child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text(
-                        status == 'pending'
-                            ? 'Pending'
-                            : status == 'added'
-                                ? 'Added'
-                                : status == 'accepted'
-                                    ? 'Accepted'
-                                    : 'Done',
-                        style: const TextStyle(fontFamily: 'kindful'),
+                      padding: kCardsInsidePadding,
+                      child: Column(
+                        children: [
+                          Text(
+                            'Expire Time',
+                            style: kCardDateTextStyle,
+                          ),
+                          Text(
+                            expireTime,
+                            style: kCardQuantityTextStyle,
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -146,68 +143,6 @@ class _SingleFoodDonationState extends State<SingleFoodDonation> {
                   ),
                 ],
               ),
-              Visibility(
-                visible: status == 'pending',
-                child: const SizedBox(height: 15),
-              ),
-              Visibility(
-                visible: status == 'pending',
-                child: ElevatedButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return CupertinoAlertDialog(
-                          title: const Text("Warning",
-                              style: TextStyle(color: Colors.red)),
-                          content: const Text(
-                              'Do you want to delete Food Donation?'),
-                          actions: [
-                            TextButton(
-                              child: const Text("Cancel",
-                                  style: TextStyle(color: kMainPurple)),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                            TextButton(
-                              child: const Text("Delete",
-                                  style: TextStyle(color: Colors.red)),
-                              onPressed: () {
-                                setState(() {
-                                  isProssesing = true;
-                                });
-                                Navigator.pop(context);
-                                FirebaseFirestore.instance
-                                    .collection('food_donation')
-                                    .doc(widget.docID)
-                                    .delete()
-                                    .then((value) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => NavBar(
-                                              FirebaseAuth
-                                                  .instance.currentUser?.uid)));
-                                  SnackBarClass.kShowSuccessSnackBar(context);
-                                  setState(() {
-                                    isProssesing = false;
-                                  });
-                                });
-                              },
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(primary: Colors.red),
-                  child: const SizedBox(
-                    width: double.infinity,
-                    child: Center(child: Text('Delete Food Donation')),
-                  ),
-                ),
-              ),
             ],
           ),
         ),
@@ -215,7 +150,7 @@ class _SingleFoodDonationState extends State<SingleFoodDonation> {
     );
   }
 
-  Padding organizationCard() {
+  Padding donatorCard() {
     return Padding(
       padding: kCardsPadding,
       child: Card(
@@ -225,30 +160,9 @@ class _SingleFoodDonationState extends State<SingleFoodDonation> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Organization', style: kCardTitleTextStyle),
+              Text('Donator', style: kCardTitleTextStyle),
               const SizedBox(height: 10),
-              status == 'pending'
-                  ? MaterialButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    AddOrganizationToDonation(widget.docID)));
-                      },
-                      child: kButtonBody('Add Organization'),
-                    )
-                  : MaterialButton(
-                      padding: EdgeInsets.zero,
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ViewOrganization(
-                                    organization, organizationName)));
-                      },
-                      child: organizationDetailsCard(),
-                    ),
+              donatorDetailsCard(),
             ],
           ),
         ),
@@ -256,59 +170,40 @@ class _SingleFoodDonationState extends State<SingleFoodDonation> {
     );
   }
 
-  SizedBox organizationDetailsCard() {
+  SizedBox donatorDetailsCard() {
     return SizedBox(
       width: double.infinity,
       child: Card(
-        child: Padding(
-          padding: kCardsInsidePadding,
-          child: Column(
-            children: [
-              Text(organizationName, style: kCardTitleTextStyle),
-              Row(
-                children: [
-                  Expanded(
-                    child: Card(
-                      child: Padding(
-                        padding: kCardsInsidePadding,
-                        child: Column(
-                          children: [
-                            Text(
-                              'City',
-                              style: kCardDescriptionTextStyle,
-                            ),
-                            Text(
-                              organizationCity,
-                              style: kCardQuantityTextStyle,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Card(
-                      child: Padding(
-                        padding: kCardsInsidePadding,
-                        child: Column(
-                          children: [
-                            Text(
-                              'District',
-                              style: kCardDescriptionTextStyle,
-                            ),
-                            Text(
-                              organizationDistrict,
-                              style: kCardQuantityTextStyle,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+        child: Column(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.location_city_outlined),
+              title: Text(donatorCity, style: kCardQuantityTextStyle),
+              subtitle: const Text('City'),
+            ),
+            ListTile(
+              leading: const Icon(Icons.location_on_outlined),
+              title: Text(donatorDistrict, style: kCardQuantityTextStyle),
+              subtitle: const Text('District'),
+            ),
+            ListTile(
+              leading: const Icon(Icons.phone_outlined),
+              title: Text(donatorPhone, style: kCardQuantityTextStyle),
+              subtitle: const Text('Phone Number'),
+              onTap: () => launch('tel:$donatorPhone'),
+            ),
+            ListTile(
+              leading: const Icon(Icons.star_outline),
+              title: Text(donatorType, style: kCardQuantityTextStyle),
+              subtitle: const Text('Business Type'),
+            ),
+            const SizedBox(height: 10),
+            MaterialButton(
+              onPressed: () => launch('tel:$donatorPhone'),
+              child: kButtonBody('Call $donatorPhone'),
+            ),
+            const SizedBox(height: 10),
+          ],
         ),
       ),
     );
