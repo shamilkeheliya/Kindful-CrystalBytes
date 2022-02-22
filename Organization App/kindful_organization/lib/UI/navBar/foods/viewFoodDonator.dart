@@ -68,7 +68,7 @@ class _ViewFoodDonatorState extends State<ViewFoodDonator> {
                       subtitle: const Text('City'),
                     ),
                     ListTile(
-                      leading: const Icon(Icons.location_on_outlined),
+                      leading: const Icon(Icons.map_outlined),
                       title: Text(district, style: kCardQuantityTextStyle),
                       subtitle: const Text('District'),
                     ),

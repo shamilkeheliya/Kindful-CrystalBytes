@@ -9,9 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class ViewOrganization extends StatefulWidget {
   late String organizationID, organizationName;
-  late bool showReportUSer;
-  ViewOrganization(
-      this.organizationID, this.organizationName, this.showReportUSer);
+  ViewOrganization(this.organizationID, this.organizationName);
   @override
   _ViewOrganizationState createState() => _ViewOrganizationState();
 }
@@ -128,20 +126,17 @@ class _ViewOrganizationState extends State<ViewOrganization> {
               child: kButtonBody('See Location'),
             ),
             const SizedBox(height: 10),
-            Visibility(
-              visible: widget.showReportUSer,
-              child: TextButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ReportUser(
-                              FirebaseAuth.instance.currentUser!.uid,
-                              widget.organizationID,
-                              widget.organizationName)));
-                },
-                child: const Text('Report Organization'),
-              ),
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ReportUser(
+                            FirebaseAuth.instance.currentUser!.uid,
+                            widget.organizationID,
+                            widget.organizationName)));
+              },
+              child: const Text('Report Organization'),
             ),
           ],
         ),

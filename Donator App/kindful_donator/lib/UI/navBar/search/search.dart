@@ -83,7 +83,7 @@ class _SearchState extends State<Search> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => ViewOrganization(
-                                    document.id, data['name'], true)));
+                                    document.id, data['name'])));
                         isLoading = false;
                       });
                     },

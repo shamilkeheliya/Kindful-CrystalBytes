@@ -1,19 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:kindful_donator/UI/navBar/feed/singleDonationView.dart';
+import 'package:kindful_donator/UI/navBar/donations/singleDonationView.dart';
 import 'package:kindful_donator/utilities/cardTextStyles.dart';
 import 'package:kindful_donator/utilities/const.dart';
 
-class PostList extends StatefulWidget {
+class DonationsList extends StatefulWidget {
+  late String userID;
+
+  DonationsList(userID) {
+    this.userID = userID;
+  }
+
   @override
-  _PostListState createState() => _PostListState();
+  _DonationsListState createState() => _DonationsListState();
 }
 
-class _PostListState extends State<PostList> {
+class _DonationsListState extends State<DonationsList> {
   final Stream<QuerySnapshot> _Stream = FirebaseFirestore.instance
       .collection('donation')
-      .where('status', isEqualTo: 'pending')
+      .where('donator', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
       .orderBy('date', descending: true)
       .snapshots();
 
@@ -37,6 +44,7 @@ class _PostListState extends State<PostList> {
           children: snapshot.data!.docs.map((DocumentSnapshot document) {
             Map<String, dynamic> data =
                 document.data()! as Map<String, dynamic>;
+
             return Padding(
               padding: kCardsPadding,
               child: MaterialButton(
@@ -45,7 +53,8 @@ class _PostListState extends State<PostList> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => SingleDonation(document.id)));
+                          builder: (context) =>
+                              SingleDonationView(document.id)));
                 },
                 child: Card(
                   elevation: 5,
@@ -65,8 +74,28 @@ class _PostListState extends State<PostList> {
                         ),
                         const SizedBox(height: 20),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: data['status'] == 'added'
+                                      ? Colors.amber
+                                      : data['status'] == 'accepted'
+                                          ? Colors.lightBlue
+                                          : Colors.green,
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Text(
+                                  data['status'] == 'added'
+                                      ? 'Added'
+                                      : data['status'] == 'accepted'
+                                          ? 'Accepted'
+                                          : 'Done',
+                                  style: const TextStyle(fontFamily: 'kindful'),
+                                ),
+                              ),
+                            ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [

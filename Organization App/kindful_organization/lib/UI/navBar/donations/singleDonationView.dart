@@ -148,67 +148,17 @@ class _SingleDonationState extends State<SingleDonation> {
                 ],
               ),
               Visibility(
-                visible: status == 'pending',
+                visible: status == 'pending' || status == 'accepted',
                 child: const SizedBox(height: 15),
               ),
               Visibility(
                 visible: status == 'pending',
-                child: ElevatedButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return CupertinoAlertDialog(
-                          title: const Text("Warning",
-                              style: TextStyle(color: Colors.red)),
-                          content: const Text(
-                              'Do you want to delete Food Donation?'),
-                          actions: [
-                            TextButton(
-                              child: const Text("Cancel",
-                                  style: TextStyle(color: kMainPurple)),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                            TextButton(
-                              child: const Text("Delete",
-                                  style: TextStyle(color: Colors.red)),
-                              onPressed: () {
-                                setState(() {
-                                  isProssesing = true;
-                                });
-                                Navigator.pop(context);
-                                FirebaseFirestore.instance
-                                    .collection('food_donation')
-                                    .doc(widget.docID)
-                                    .delete()
-                                    .then((value) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (contex) => NavBar(
-                                              FirebaseAuth
-                                                  .instance.currentUser?.uid)));
-                                  setState(() {
-                                    isProssesing = false;
-                                  });
-                                  SnackBarClass.kShowSuccessSnackBar(context);
-                                });
-                              },
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(primary: Colors.red),
-                  child: const SizedBox(
-                    width: double.infinity,
-                    child: Center(child: Text('Delete Food Donation')),
-                  ),
-                ),
+                child: buttonForPending(),
               ),
+              Visibility(
+                visible: status == 'accepted',
+                child: buttonForAccepted(),
+              )
             ],
           ),
         ),
@@ -253,6 +203,116 @@ class _SingleDonationState extends State<SingleDonation> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  ElevatedButton buttonForPending() {
+    return ElevatedButton(
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return CupertinoAlertDialog(
+              title: const Text("Warning", style: TextStyle(color: Colors.red)),
+              content: const Text('Do you want to delete Food Donation?'),
+              actions: [
+                TextButton(
+                  child: const Text("Cancel",
+                      style: TextStyle(color: kMainPurple)),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                TextButton(
+                  child:
+                      const Text("Delete", style: TextStyle(color: Colors.red)),
+                  onPressed: () {
+                    setState(() {
+                      isProssesing = true;
+                    });
+                    Navigator.pop(context);
+                    FirebaseFirestore.instance
+                        .collection('food_donation')
+                        .doc(widget.docID)
+                        .delete()
+                        .then((value) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (contex) => NavBar(
+                                  FirebaseAuth.instance.currentUser?.uid)));
+                      setState(() {
+                        isProssesing = false;
+                      });
+                      SnackBarClass.kShowSuccessSnackBar(context);
+                    });
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+      style: ElevatedButton.styleFrom(primary: Colors.red),
+      child: const SizedBox(
+        width: double.infinity,
+        child: Center(child: Text('Delete Food Donation')),
+      ),
+    );
+  }
+
+  ElevatedButton buttonForAccepted() {
+    return ElevatedButton(
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return CupertinoAlertDialog(
+              title:
+                  const Text("Confirm", style: TextStyle(color: Colors.green)),
+              content: const Text('Is this donation done?'),
+              actions: [
+                TextButton(
+                  child: const Text("Cancel",
+                      style: TextStyle(color: kMainPurple)),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                TextButton(
+                  child: const Text("Confirm",
+                      style: TextStyle(color: Colors.green)),
+                  onPressed: () {
+                    setState(() {
+                      isProssesing = true;
+                    });
+                    Navigator.pop(context);
+                    FirebaseFirestore.instance
+                        .collection('donation')
+                        .doc(widget.docID)
+                        .update({'status': 'done'}).then((value) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (contex) => NavBar(
+                                  FirebaseAuth.instance.currentUser?.uid)));
+                      setState(() {
+                        isProssesing = false;
+                      });
+                      SnackBarClass.kShowSuccessSnackBar(context);
+                    });
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+      style: ElevatedButton.styleFrom(primary: Colors.green),
+      child: const SizedBox(
+        width: double.infinity,
+        child: Center(child: Text('Donation Done')),
       ),
     );
   }

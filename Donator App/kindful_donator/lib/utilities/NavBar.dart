@@ -25,7 +25,7 @@ class _NavBarState extends State<NavBar> {
   Widget build(BuildContext context) {
     final _kTabPages = <Widget>[
       Center(child: Feed()),
-      Center(child: Donations()),
+      Center(child: Donations(FirebaseAuth.instance.currentUser)),
       Center(child: Search()),
       Center(child: Profile(FirebaseAuth.instance.currentUser)),
     ];

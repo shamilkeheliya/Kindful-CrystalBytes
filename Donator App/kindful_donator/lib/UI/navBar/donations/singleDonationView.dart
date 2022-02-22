@@ -2,33 +2,33 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kindful_organization/UI/navBar/foods/viewFoodDonator.dart';
-import 'package:kindful_organization/utilities/cardTextStyles.dart';
-import 'package:kindful_organization/utilities/const.dart';
-import 'package:kindful_organization/utilities/navBar.dart';
+import 'package:kindful_donator/utilities/NavBar.dart';
+import 'package:kindful_donator/utilities/cardTextStyles.dart';
+import 'package:kindful_donator/utilities/const.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:kindful_donator/UI/navBar/search/viewOrganization.dart';
 
-class SingleFoodDonationView extends StatefulWidget {
+class SingleDonationView extends StatefulWidget {
   late String docID;
 
-  SingleFoodDonationView(String docID) {
+  SingleDonationView(String docID) {
     this.docID = docID;
   }
   @override
-  _SingleFoodDonationViewState createState() => _SingleFoodDonationViewState();
+  _SingleDonationViewState createState() => _SingleDonationViewState();
 }
 
-class _SingleFoodDonationViewState extends State<SingleFoodDonationView> {
+class _SingleDonationViewState extends State<SingleDonationView> {
   String title = 'Donation Title';
   String description = 'Description';
   String quantity = 'Quantity';
   String status = 'Status';
   String date = 'Date';
-  String donator = '';
+  String organization = '';
 
-  String donatorName = 'Donator Name';
-  String donatorCity = 'City';
-  String donatorDistrict = 'District';
+  String organizationName = 'Donator Name';
+  String organizationCity = 'City';
+  String organizationDistrict = 'District';
 
   bool isProssesing = false;
 
@@ -40,7 +40,7 @@ class _SingleFoodDonationViewState extends State<SingleFoodDonationView> {
 
   void getData() async {
     await FirebaseFirestore.instance
-        .collection('food_donation')
+        .collection('donation')
         .doc(widget.docID)
         .get()
         .then((DocumentSnapshot documentSnapshot) {
@@ -50,23 +50,21 @@ class _SingleFoodDonationViewState extends State<SingleFoodDonationView> {
         quantity = documentSnapshot['quantity'];
         status = documentSnapshot['status'];
         date = documentSnapshot['date'];
-        donator = documentSnapshot['donator'];
+        organization = documentSnapshot['organization'];
       });
     });
 
-    if (donator != '') {
-      FirebaseFirestore.instance
-          .collection('food_donators')
-          .doc(donator)
-          .get()
-          .then((DocumentSnapshot documentSnapshot) {
-        setState(() {
-          donatorName = documentSnapshot['name'];
-          donatorCity = documentSnapshot['city'];
-          donatorDistrict = documentSnapshot['district'];
-        });
+    FirebaseFirestore.instance
+        .collection('food_donators')
+        .doc(organization)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      setState(() {
+        organizationName = documentSnapshot['name'];
+        organizationCity = documentSnapshot['city'];
+        organizationDistrict = documentSnapshot['district'];
       });
-    }
+    });
   }
 
   @override
@@ -78,7 +76,7 @@ class _SingleFoodDonationViewState extends State<SingleFoodDonationView> {
         child: ListView(
           children: [
             mainCard(),
-            donatorCard(),
+            organizationCard(),
           ],
         ),
       ),
@@ -144,17 +142,13 @@ class _SingleFoodDonationViewState extends State<SingleFoodDonationView> {
                 ],
               ),
               Visibility(
-                visible: status == 'added' || status == 'accepted',
+                visible: status == 'added',
                 child: const SizedBox(height: 15),
               ),
               Visibility(
                 visible: status == 'added',
                 child: buttonForAdded(),
               ),
-              Visibility(
-                visible: status == 'accepted',
-                child: buttonForAccepted(),
-              )
             ],
           ),
         ),
@@ -192,7 +186,7 @@ class _SingleFoodDonationViewState extends State<SingleFoodDonationView> {
                           });
                           Navigator.pop(context);
                           FirebaseFirestore.instance
-                              .collection('food_donation')
+                              .collection('donation')
                               .doc(widget.docID)
                               .update({'status': 'accepted'}).then((value) {
                             Navigator.push(
@@ -247,11 +241,11 @@ class _SingleFoodDonationViewState extends State<SingleFoodDonationView> {
                           });
                           Navigator.pop(context);
                           FirebaseFirestore.instance
-                              .collection('food_donation')
+                              .collection('donation')
                               .doc(widget.docID)
                               .update({
                             'status': 'pending',
-                            'organization': '',
+                            'donator': '',
                           }).then((value) {
                             setState(() {
                               isProssesing = false;
@@ -281,62 +275,7 @@ class _SingleFoodDonationViewState extends State<SingleFoodDonationView> {
     );
   }
 
-  ElevatedButton buttonForAccepted() {
-    return ElevatedButton(
-      onPressed: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return CupertinoAlertDialog(
-              title:
-                  const Text("Confirm", style: TextStyle(color: Colors.green)),
-              content: const Text('Is this food donation done?'),
-              actions: [
-                TextButton(
-                  child: const Text("Cancel",
-                      style: TextStyle(color: kMainPurple)),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                TextButton(
-                  child: const Text("Confirm",
-                      style: TextStyle(color: Colors.green)),
-                  onPressed: () {
-                    setState(() {
-                      isProssesing = true;
-                    });
-                    Navigator.pop(context);
-                    FirebaseFirestore.instance
-                        .collection('food_donation')
-                        .doc(widget.docID)
-                        .update({'status': 'done'}).then((value) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (contex) => NavBar(
-                                  FirebaseAuth.instance.currentUser?.uid)));
-                      setState(() {
-                        isProssesing = false;
-                      });
-                      SnackBarClass.kShowSuccessSnackBar(context);
-                    });
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      },
-      style: ElevatedButton.styleFrom(primary: Colors.green),
-      child: const SizedBox(
-        width: double.infinity,
-        child: Center(child: Text('Donation Done')),
-      ),
-    );
-  }
-
-  Padding donatorCard() {
+  Padding organizationCard() {
     return Padding(
       padding: kCardsPadding,
       child: Card(
@@ -346,7 +285,7 @@ class _SingleFoodDonationViewState extends State<SingleFoodDonationView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Donator', style: kCardTitleTextStyle),
+              Text('Organization', style: kCardTitleTextStyle),
               const SizedBox(height: 10),
               MaterialButton(
                 padding: EdgeInsets.zero,
@@ -354,10 +293,10 @@ class _SingleFoodDonationViewState extends State<SingleFoodDonationView> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              ViewFoodDonator(donator, donatorName)));
+                          builder: (context) => ViewOrganization(
+                              organization, organizationName)));
                 },
-                child: donatorDetailsCard(),
+                child: organizationDetailsCard(),
               ),
             ],
           ),
@@ -366,7 +305,7 @@ class _SingleFoodDonationViewState extends State<SingleFoodDonationView> {
     );
   }
 
-  SizedBox donatorDetailsCard() {
+  SizedBox organizationDetailsCard() {
     return SizedBox(
       width: double.infinity,
       child: Card(
@@ -374,7 +313,7 @@ class _SingleFoodDonationViewState extends State<SingleFoodDonationView> {
           padding: kCardsInsidePadding,
           child: Column(
             children: [
-              Text(donatorName, style: kCardTitleTextStyle),
+              Text(organizationName, style: kCardTitleTextStyle),
               Row(
                 children: [
                   Expanded(
@@ -388,7 +327,7 @@ class _SingleFoodDonationViewState extends State<SingleFoodDonationView> {
                               style: kCardDescriptionTextStyle,
                             ),
                             Text(
-                              donatorCity,
+                              organizationCity,
                               style: kCardQuantityTextStyle,
                             ),
                           ],
@@ -407,7 +346,7 @@ class _SingleFoodDonationViewState extends State<SingleFoodDonationView> {
                               style: kCardDescriptionTextStyle,
                             ),
                             Text(
-                              donatorDistrict,
+                              organizationDistrict,
                               style: kCardQuantityTextStyle,
                             ),
                           ],

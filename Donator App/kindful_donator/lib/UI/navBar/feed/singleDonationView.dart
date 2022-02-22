@@ -1,36 +1,40 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kindful_organization/utilities/cardTextStyles.dart';
-import 'package:kindful_organization/utilities/const.dart';
+import 'package:kindful_donator/utilities/cardTextStyles.dart';
+import 'package:kindful_donator/utilities/const.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:maps_launcher/maps_launcher.dart';
 
-class SingleFoodDonation extends StatefulWidget {
+class SingleDonation extends StatefulWidget {
   late String docID;
 
-  SingleFoodDonation(String docID) {
+  SingleDonation(String docID) {
     this.docID = docID;
   }
 
   @override
-  _SingleFoodDonationState createState() => _SingleFoodDonationState();
+  _SingleDonationState createState() => _SingleDonationState();
 }
 
-class _SingleFoodDonationState extends State<SingleFoodDonation> {
-  String title = 'Food Title';
+class _SingleDonationState extends State<SingleDonation> {
+  String title = 'Donation Title';
   String description = 'Description';
   String quantity = 'Quantity';
   String status = 'Status';
-  String expireTime = 'Time';
   String date = 'Date';
-  String donator = '';
+  String organization = '';
 
-  String donatorName = 'Donator Name';
-  String donatorCity = 'City';
-  String donatorDistrict = 'District';
-  String donatorType = 'Business Type';
-  String donatorPhone = 'Phone Number';
+  String organizationName = 'Donator Name';
+  String organizationCity = 'City';
+  String organizationDistrict = 'District';
+  String organizationAddress = 'Address';
+  String organizationType = 'Business Type';
+  String organizationPhone = 'Phone Number';
+  late double organizationLatitude;
+  late double organizationLongitude;
+  String organizationGuardianName = 'Guardian Name';
 
   bool isProssesing = false;
 
@@ -42,7 +46,7 @@ class _SingleFoodDonationState extends State<SingleFoodDonation> {
 
   void getData() async {
     await FirebaseFirestore.instance
-        .collection('food_donation')
+        .collection('donation')
         .doc(widget.docID)
         .get()
         .then((DocumentSnapshot documentSnapshot) {
@@ -51,23 +55,26 @@ class _SingleFoodDonationState extends State<SingleFoodDonation> {
         description = documentSnapshot['description'];
         quantity = documentSnapshot['quantity'];
         status = documentSnapshot['status'];
-        expireTime = documentSnapshot['expireTime'];
         date = documentSnapshot['date'];
-        donator = documentSnapshot['donator'];
+        organization = documentSnapshot['organization'];
       });
     });
 
     await FirebaseFirestore.instance
-        .collection('food_donators')
-        .doc(donator)
+        .collection('organizations')
+        .doc(organization)
         .get()
         .then((DocumentSnapshot documentSnapshot) {
       setState(() {
-        donatorName = documentSnapshot['name'];
-        donatorCity = documentSnapshot['city'];
-        donatorDistrict = documentSnapshot['district'];
-        donatorType = documentSnapshot['type'];
-        donatorPhone = documentSnapshot['phone'];
+        organizationName = documentSnapshot['name'];
+        organizationCity = documentSnapshot['city'];
+        organizationDistrict = documentSnapshot['district'];
+        organizationAddress = documentSnapshot['address'];
+        organizationType = documentSnapshot['type'];
+        organizationPhone = documentSnapshot['phone'];
+        organizationLatitude = documentSnapshot['location']['latitude'];
+        organizationLongitude = documentSnapshot['location']['longitude'];
+        organizationGuardianName = documentSnapshot['guardian']['guardianName'];
       });
     });
   }
@@ -109,35 +116,23 @@ class _SingleFoodDonationState extends State<SingleFoodDonation> {
               ),
               const SizedBox(height: 20),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Card(
-                    child: Padding(
-                      padding: kCardsInsidePadding,
-                      child: Column(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            'Expire Time',
+                            date.toString(),
                             style: kCardDateTextStyle,
                           ),
                           Text(
-                            expireTime,
+                            'Quantity: $quantity',
                             style: kCardQuantityTextStyle,
                           ),
                         ],
-                      ),
-                    ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        date.toString(),
-                        style: kCardDateTextStyle,
-                      ),
-                      Text(
-                        'Quantity: $quantity',
-                        style: kCardQuantityTextStyle,
                       ),
                     ],
                   ),
@@ -176,32 +171,51 @@ class _SingleFoodDonationState extends State<SingleFoodDonation> {
       child: Card(
         child: Column(
           children: [
-            Text(donatorName, style: kCardTitleTextStyle),
+            Text(organizationName, style: kCardTitleTextStyle),
             ListTile(
               leading: const Icon(Icons.location_city_outlined),
-              title: Text(donatorCity, style: kCardQuantityTextStyle),
+              title: Text(organizationCity, style: kCardQuantityTextStyle),
               subtitle: const Text('City'),
             ),
             ListTile(
               leading: const Icon(Icons.map_outlined),
-              title: Text(donatorDistrict, style: kCardQuantityTextStyle),
+              title: Text(organizationDistrict, style: kCardQuantityTextStyle),
               subtitle: const Text('District'),
             ),
             ListTile(
+              leading: const Icon(Icons.location_on_outlined),
+              title: Text(organizationAddress, style: kCardQuantityTextStyle),
+              subtitle: const Text('Address'),
+            ),
+            ListTile(
               leading: const Icon(Icons.phone_outlined),
-              title: Text(donatorPhone, style: kCardQuantityTextStyle),
+              title: Text(organizationPhone, style: kCardQuantityTextStyle),
               subtitle: const Text('Phone Number'),
-              onTap: () => launch('tel:$donatorPhone'),
+              onTap: () => launch('tel:$organizationPhone'),
             ),
             ListTile(
               leading: const Icon(Icons.star_outline),
-              title: Text(donatorType, style: kCardQuantityTextStyle),
+              title: Text(organizationType, style: kCardQuantityTextStyle),
               subtitle: const Text('Business Type'),
+            ),
+            ListTile(
+              leading: const Icon(Icons.supervisor_account),
+              title:
+                  Text(organizationGuardianName, style: kCardQuantityTextStyle),
+              subtitle: const Text('Guardian Name'),
             ),
             const SizedBox(height: 10),
             MaterialButton(
-              onPressed: () => launch('tel:$donatorPhone'),
-              child: kButtonBody('Call $donatorPhone'),
+              onPressed: () => launch('tel:$organizationPhone'),
+              child: kButtonBody('Call $organizationPhone'),
+            ),
+            const SizedBox(height: 10),
+            MaterialButton(
+              onPressed: () {
+                MapsLauncher.launchCoordinates(
+                    organizationLatitude, organizationLongitude);
+              },
+              child: kButtonBody('See Location'),
             ),
             const SizedBox(height: 10),
           ],
