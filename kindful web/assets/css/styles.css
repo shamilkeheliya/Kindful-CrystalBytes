@@ -63,17 +63,6 @@ html{
 }
 
 
-
-/*========== Button Dark/Light ==========*/
-.change-theme{
-  position: absolute;
-  right: 1rem;
-  top: 1.8rem;
-  color: var(--text-color);
-  font-size: 1rem;
-  cursor: pointer;
-}
-
 body{
   margin: var(--header-height) 0 0 0;
   font-family: var(--body-font);
