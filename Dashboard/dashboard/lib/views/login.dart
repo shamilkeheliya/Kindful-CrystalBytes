@@ -23,17 +23,15 @@ class _LoginState extends State<Login> {
       child: Scaffold(
         appBar: AppBar(backgroundColor: kMainPurple),
         body: Center(
-          child: MediaQuery.of(context).size.width < 500
-              ? buildBody()
-              : Container(
-                  width: 500,
-                  child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: buildBody(),
-                    ),
-                  ),
-                ),
+          child: SizedBox(
+            width: 500,
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: buildBody(),
+              ),
+            ),
+          ),
         ),
       ),
     );

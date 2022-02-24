@@ -1,7 +1,11 @@
 import 'package:dashboard/utilities/const.dart';
 import 'package:dashboard/views/login.dart';
+import 'package:dashboard/views/tabs/donators/donators.dart';
+import 'package:dashboard/views/tabs/food_donations/food_donations.dart';
+import 'package:dashboard/views/tabs/food_donators/food_donators.dart';
+import 'package:dashboard/views/tabs/organiztions/organizations.dart';
 import 'tabs/dashboard/dashboard.dart';
-import 'package:dashboard/views/tabs/donations.dart';
+import 'tabs/donations/donations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -11,71 +15,51 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _selectedTab = 0;
+  int _selectedTab = 3;
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
-      child: MediaQuery.of(context).size.width > 800 ? webView() : mobileView(),
-    );
-  }
-
-  Scaffold webView() {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: kMainPurple,
-        title: const Text(
-          'Kindful Dashboard',
-          style: TextStyle(
-            fontFamily: 'kindful',
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          backgroundColor: kMainPurple,
+          title: const Text(
+            'DASHBOARD',
+            style: TextStyle(
+              fontFamily: 'kindful',
+            ),
+          ),
+        ),
+        body: Container(
+          color: Colors.grey,
+          width: double.infinity,
+          height: double.infinity,
+          child: Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: buildTabColumn(),
+              ),
+              Expanded(
+                flex: 4,
+                child: _kTabs[_selectedTab],
+              ),
+            ],
           ),
         ),
       ),
-      body: Container(
-        color: Colors.grey,
-        width: double.infinity,
-        height: double.infinity,
-        child: Row(
-          children: [
-            Expanded(
-              flex: 1,
-              child: buildTabColumn(),
-            ),
-            Expanded(
-              flex: 3,
-              child: _kTabs[_selectedTab],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Scaffold mobileView() {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: kMainPurple,
-        title: const Text(
-          'Kindful Dashboard',
-          style: TextStyle(
-            fontFamily: 'kindful',
-          ),
-        ),
-      ),
-      body: _kTabs[_selectedTab],
     );
   }
 
   final _kTabs = <Widget>[
     Dashboard(),
     Donations(),
-    Dashboard(),
-    Donations(),
-    Dashboard(),
-    Donations(),
+    FoodDonations(),
+    Organizations(),
+    Donators(),
+    FoodDonators(),
   ];
 
   Container buildTabColumn() {
@@ -83,7 +67,7 @@ class _HomeState extends State<Home> {
       color: kMainGreen,
       child: Column(
         children: [
-          SizedBox(height: MediaQuery.of(context).size.height / 5),
+          SizedBox(height: MediaQuery.of(context).size.height / 65),
           const Divider(thickness: 2),
           SizedBox(height: MediaQuery.of(context).size.height / 65),
           buildTab(0, 'Dashboard'),
@@ -102,6 +86,8 @@ class _HomeState extends State<Home> {
           const Divider(thickness: 2),
           SizedBox(height: MediaQuery.of(context).size.height / 65),
           buildSignOutButton(),
+          SizedBox(height: MediaQuery.of(context).size.height / 65),
+          const Divider(thickness: 2),
         ],
       ),
     );
