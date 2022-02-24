@@ -38,32 +38,7 @@ class _HomeState extends State<Home> {
             children: [
               Expanded(
                 flex: 1,
-                child: Container(
-                  color: kMainGreen,
-                  child: Column(
-                    children: [
-                      SizedBox(height: MediaQuery.of(context).size.height / 5),
-                      const Divider(thickness: 2),
-                      SizedBox(height: MediaQuery.of(context).size.height / 65),
-                      buildTab(0, 'Dashboard'),
-                      SizedBox(height: MediaQuery.of(context).size.height / 65),
-                      const Divider(thickness: 2),
-                      SizedBox(height: MediaQuery.of(context).size.height / 65),
-                      buildTab(1, 'Donations'),
-                      buildTab(2, 'Food Donations'),
-                      SizedBox(height: MediaQuery.of(context).size.height / 65),
-                      const Divider(thickness: 2),
-                      SizedBox(height: MediaQuery.of(context).size.height / 65),
-                      buildTab(3, 'Organizations'),
-                      buildTab(4, 'Donators'),
-                      buildTab(5, 'Food Donators'),
-                      SizedBox(height: MediaQuery.of(context).size.height / 65),
-                      const Divider(thickness: 2),
-                      SizedBox(height: MediaQuery.of(context).size.height / 65),
-                      buildSignOutButton(),
-                    ],
-                  ),
-                ),
+                child: buildTabColumn(),
               ),
               Expanded(
                 flex: 3,
@@ -84,6 +59,35 @@ class _HomeState extends State<Home> {
     Dashboard(),
     Donations(),
   ];
+
+  Container buildTabColumn() {
+    return Container(
+      color: kMainGreen,
+      child: Column(
+        children: [
+          SizedBox(height: MediaQuery.of(context).size.height / 5),
+          const Divider(thickness: 2),
+          SizedBox(height: MediaQuery.of(context).size.height / 65),
+          buildTab(0, 'Dashboard'),
+          SizedBox(height: MediaQuery.of(context).size.height / 65),
+          const Divider(thickness: 2),
+          SizedBox(height: MediaQuery.of(context).size.height / 65),
+          buildTab(1, 'Donations'),
+          buildTab(2, 'Food Donations'),
+          SizedBox(height: MediaQuery.of(context).size.height / 65),
+          const Divider(thickness: 2),
+          SizedBox(height: MediaQuery.of(context).size.height / 65),
+          buildTab(3, 'Organizations'),
+          buildTab(4, 'Donators'),
+          buildTab(5, 'Food Donators'),
+          SizedBox(height: MediaQuery.of(context).size.height / 65),
+          const Divider(thickness: 2),
+          SizedBox(height: MediaQuery.of(context).size.height / 65),
+          buildSignOutButton(),
+        ],
+      ),
+    );
+  }
 
   MaterialButton buildTab(int value, String title) {
     return MaterialButton(
@@ -117,10 +121,10 @@ class _HomeState extends State<Home> {
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            return CupertinoAlertDialog(
+            return AlertDialog(
               title: const Text("Are you sure?",
                   style: TextStyle(color: Colors.red)),
-              content: Text('Do you want to Log Out?'),
+              content: const Text('Do you want to Log Out?'),
               actions: [
                 TextButton(
                   child: const Text("NO", style: TextStyle(color: kMainPurple)),
