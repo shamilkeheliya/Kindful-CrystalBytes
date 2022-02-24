@@ -71,6 +71,7 @@ class _NavBarState extends State<NavBar> {
         });
       },
     );
+
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(

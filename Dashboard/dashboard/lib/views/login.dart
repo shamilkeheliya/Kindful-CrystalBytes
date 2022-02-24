@@ -18,20 +18,23 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(backgroundColor: kMainPurple),
-      body: Center(
-        child: MediaQuery.of(context).size.width < 500
-            ? buildBody()
-            : Container(
-                width: 500,
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: buildBody(),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBar(backgroundColor: kMainPurple),
+        body: Center(
+          child: MediaQuery.of(context).size.width < 500
+              ? buildBody()
+              : Container(
+                  width: 500,
+                  child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: buildBody(),
+                    ),
                   ),
                 ),
-              ),
+        ),
       ),
     );
   }
