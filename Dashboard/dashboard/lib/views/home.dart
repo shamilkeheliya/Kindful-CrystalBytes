@@ -1,11 +1,8 @@
-import 'dart:html';
-
 import 'package:dashboard/utilities/const.dart';
 import 'package:dashboard/views/login.dart';
-import 'package:dashboard/views/tabs/dashboard.dart';
+import 'tabs/dashboard/dashboard.dart';
 import 'package:dashboard/views/tabs/donations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -20,34 +17,55 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
-      child: Scaffold(
-        appBar: AppBar(
-            centerTitle: true,
-            backgroundColor: kMainPurple,
-            title: const Text(
-              'Kindful Dashboard',
-              style: TextStyle(
-                fontFamily: 'kindful',
-              ),
-            )),
-        body: Container(
-          color: Colors.grey,
-          width: double.infinity,
-          height: double.infinity,
-          child: Row(
-            children: [
-              Expanded(
-                flex: 1,
-                child: buildTabColumn(),
-              ),
-              Expanded(
-                flex: 3,
-                child: _kTabs[_selectedTab],
-              ),
-            ],
+      child: MediaQuery.of(context).size.width > 800 ? webView() : mobileView(),
+    );
+  }
+
+  Scaffold webView() {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: kMainPurple,
+        title: const Text(
+          'Kindful Dashboard',
+          style: TextStyle(
+            fontFamily: 'kindful',
           ),
         ),
       ),
+      body: Container(
+        color: Colors.grey,
+        width: double.infinity,
+        height: double.infinity,
+        child: Row(
+          children: [
+            Expanded(
+              flex: 1,
+              child: buildTabColumn(),
+            ),
+            Expanded(
+              flex: 3,
+              child: _kTabs[_selectedTab],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Scaffold mobileView() {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: kMainPurple,
+        title: const Text(
+          'Kindful Dashboard',
+          style: TextStyle(
+            fontFamily: 'kindful',
+          ),
+        ),
+      ),
+      body: _kTabs[_selectedTab],
     );
   }
 
