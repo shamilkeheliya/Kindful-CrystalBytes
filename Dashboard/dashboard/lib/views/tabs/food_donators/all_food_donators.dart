@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dashboard/utilities/cardTextStyles.dart';
 import 'package:dashboard/utilities/const.dart';
+import 'package:dashboard/views/tabs/food_donators/food_donator_view.dart';
 import 'package:dashboard/views/tabs/organiztions/organization_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -101,7 +102,7 @@ class _AllFoodDonatorsState extends State<AllFoodDonators> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => OrganizationView(
+                                    builder: (context) => FoodDonatorView(
                                         document.id, data['name'])));
                           },
                           child: const Text('View Profile'),

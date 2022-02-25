@@ -24,6 +24,7 @@ class _HomeState extends State<Home> {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
+          automaticallyImplyLeading: false,
           backgroundColor: kMainPurple,
           title: const Text(
             'DASHBOARD',

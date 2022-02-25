@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class DonationView extends StatefulWidget {
-  late String docId;
-  DonationView(this.docId);
+  late String docId, title;
+  DonationView(this.docId, this.title);
   @override
   _DonationViewState createState() => _DonationViewState();
 }

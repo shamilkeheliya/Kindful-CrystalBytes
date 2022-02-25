@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dashboard/utilities/cardTextStyles.dart';
 import 'package:dashboard/utilities/const.dart';
+import 'package:dashboard/views/tabs/donators/donator_view.dart';
 import 'package:dashboard/views/tabs/organiztions/organization_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -12,7 +13,7 @@ class AllDonators extends StatefulWidget {
 
 class _AllDonatorsState extends State<AllDonators> {
   final Stream<QuerySnapshot> _Stream =
-  FirebaseFirestore.instance.collection('donators').snapshots();
+      FirebaseFirestore.instance.collection('donators').snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class _AllDonatorsState extends State<AllDonators> {
         return ListView(
           children: snapshot.data!.docs.map((DocumentSnapshot document) {
             Map<String, dynamic> data =
-            document.data()! as Map<String, dynamic>;
+                document.data()! as Map<String, dynamic>;
             return Padding(
               padding: kCardsPadding,
               child: Card(
@@ -67,7 +68,7 @@ class _AllDonatorsState extends State<AllDonators> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => OrganizationView(
+                                    builder: (context) => DonatorView(
                                         document.id, data['name'])));
                           },
                           child: const Text('View Profile'),

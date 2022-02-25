@@ -1,3 +1,4 @@
+import 'package:dashboard/views/tabs/dashboard/donationsCountRow.dart';
 import 'package:dashboard/views/tabs/dashboard/userCountRow.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +15,7 @@ class _DashboardState extends State<Dashboard> {
       child: ListView(
         children: [
           UserCountRow(),
+          DonationsCountRow(),
         ],
       ),
     );
