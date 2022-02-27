@@ -85,7 +85,7 @@ class _FoodDonatorViewState extends State<FoodDonatorView> {
                   Navigator.push(
                       context, MaterialPageRoute(builder: (context) => Home()));
                 },
-                icon: Icon(Icons.home)),
+                icon: const Icon(Icons.home)),
           ],
           title: Text(
             widget.organizationName,

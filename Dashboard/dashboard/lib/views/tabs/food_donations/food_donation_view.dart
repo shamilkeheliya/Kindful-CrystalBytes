@@ -8,6 +8,17 @@ class FoodDonationView extends StatefulWidget {
 }
 
 class _FoodDonationViewState extends State<FoodDonationView> {
+  String date = 'Date';
+  String time = 'Expire Time';
+  String description = 'Description';
+  String foodDonator = '';
+  String foodDonatorName = 'Donator';
+  String organization = '';
+  String organizationName = 'Organization';
+  String quantity = 'Quantity';
+  String status = 'Status';
+  String title = 'Title';
+
   @override
   Widget build(BuildContext context) {
     return Container();
