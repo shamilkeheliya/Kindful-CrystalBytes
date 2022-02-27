@@ -89,7 +89,7 @@ class _ViewDonatorState extends State<ViewDonator> {
                             widget.donatorID,
                             widget.donatorName)));
               },
-              child: const Text('Report Organization'),
+              child: const Text('Report Donator'),
             ),
           ],
         ),

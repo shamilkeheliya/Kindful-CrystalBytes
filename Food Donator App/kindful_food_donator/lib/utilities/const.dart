@@ -91,8 +91,8 @@ Padding kTextTermsAndPrivacyPolicy() {
       children: [
         const Text('By creating account, You agree to app'),
         TextButton(
-          //onPressed: () {},
-          onPressed: () => launch('https://kindful.secodek.com'),
+          onPressed: () => launch(
+              'https://kindful.secodek.com/PrivacyPolicy/PrivacyPolicy.html'),
           child: const Text('Terms & Privacy Policy'),
         ),
       ],

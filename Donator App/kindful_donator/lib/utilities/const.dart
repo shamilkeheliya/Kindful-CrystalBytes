@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 const kMainGreen = Color(0xFF59E287);
 const kMainPurple = Color(0xFF4840B8);
@@ -90,8 +91,8 @@ Padding kTextTermsAndPrivacyPolicy() {
       children: [
         const Text('By creating account, You agree to app'),
         TextButton(
-          onPressed: () {},
-          //onPressed: () => launch(''),
+          onPressed: () => launch(
+              'https://kindful.secodek.com/PrivacyPolicy/PrivacyPolicy.html'),
           child: const Text('Terms & Privacy Policy'),
         ),
       ],

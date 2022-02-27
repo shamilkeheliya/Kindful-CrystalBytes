@@ -83,9 +83,12 @@ class _AllDonationsState extends State<AllDonations> {
                     ),
                   ),
                   collapsed: Container(),
-                  expanded: Text(
-                    data['description'],
-                    softWrap: true,
+                  expanded: Padding(
+                    padding: kCardsInsidePadding,
+                    child: Text(
+                      data['description'],
+                      softWrap: true,
+                    ),
                   ),
                 ),
               ),

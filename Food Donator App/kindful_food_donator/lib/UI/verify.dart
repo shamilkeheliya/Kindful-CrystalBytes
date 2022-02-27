@@ -195,7 +195,7 @@ class _VerifyState extends State<Verify> {
                   nicBackImageFilePath = _nicBackImageFile.path;
                 });
               },
-              child: kButtonBody('Get NIC Front Image'),
+              child: kButtonBody('Get NIC Back Image'),
             ),
             //
             // Divider

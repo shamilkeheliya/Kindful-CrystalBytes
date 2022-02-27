@@ -103,7 +103,7 @@ class _ViewFoodDonatorState extends State<ViewFoodDonator> {
                             widget.donatorID,
                             widget.donatorName)));
               },
-              child: const Text('Report Organization'),
+              child: const Text('Report Food Donator'),
             ),
           ],
         ),
