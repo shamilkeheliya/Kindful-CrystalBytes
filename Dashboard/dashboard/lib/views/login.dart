@@ -21,7 +21,7 @@ class _LoginState extends State<Login> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        appBar: AppBar(backgroundColor: kMainPurple),
+        //appBar: AppBar(backgroundColor: kMainPurple),
         body: Center(
           child: SizedBox(
             width: 500,

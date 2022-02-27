@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dashboard/utilities/const.dart';
 import 'package:dashboard/views/login.dart';
 import 'package:dashboard/views/tabs/donators/donators.dart';
 import 'package:dashboard/views/tabs/food_donations/food_donations.dart';
 import 'package:dashboard/views/tabs/food_donators/food_donators.dart';
 import 'package:dashboard/views/tabs/organiztions/organizations.dart';
+import 'package:dashboard/views/tabs/users/users.dart';
 import 'tabs/dashboard/dashboard.dart';
 import 'tabs/donations/donations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,6 +17,25 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  String userType = '';
+
+  void initState() {
+    super.initState();
+    getType();
+  }
+
+  Future<void> getType() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      setState(() {
+        userType = documentSnapshot['type'];
+      });
+    });
+  }
+
   int _selectedTab = 0;
 
   @override
@@ -56,6 +77,7 @@ class _HomeState extends State<Home> {
 
   final _kTabs = <Widget>[
     Dashboard(),
+    UsersView(),
     Donations(),
     FoodDonations(),
     Organizations(),
@@ -72,17 +94,21 @@ class _HomeState extends State<Home> {
           const Divider(thickness: 2),
           SizedBox(height: MediaQuery.of(context).size.height / 65),
           buildTab(0, 'Dashboard'),
+          Visibility(
+            visible: userType == 'Admin',
+            child: buildTab(1, 'Users'),
+          ),
           SizedBox(height: MediaQuery.of(context).size.height / 65),
           const Divider(thickness: 2),
           SizedBox(height: MediaQuery.of(context).size.height / 65),
-          buildTab(1, 'Donations'),
-          buildTab(2, 'Food Donations'),
+          buildTab(2, 'Donations'),
+          buildTab(3, 'Food Donations'),
           SizedBox(height: MediaQuery.of(context).size.height / 65),
           const Divider(thickness: 2),
           SizedBox(height: MediaQuery.of(context).size.height / 65),
-          buildTab(3, 'Organizations'),
-          buildTab(4, 'Donators'),
-          buildTab(5, 'Food Donators'),
+          buildTab(4, 'Organizations'),
+          buildTab(5, 'Donators'),
+          buildTab(6, 'Food Donators'),
           SizedBox(height: MediaQuery.of(context).size.height / 65),
           const Divider(thickness: 2),
           SizedBox(height: MediaQuery.of(context).size.height / 65),

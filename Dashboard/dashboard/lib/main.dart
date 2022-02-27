@@ -1,4 +1,6 @@
 import 'package:dashboard/views/home.dart';
+import 'package:dashboard/views/login.dart';
+import 'package:dashboard/views/tabs/users/createUser.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -28,7 +30,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
       ),
-      home: Home(),
+      home: CreateUser(),
     );
   }
 }
