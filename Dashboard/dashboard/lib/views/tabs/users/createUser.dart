@@ -169,7 +169,7 @@ class _CreateUserState extends State<CreateUser> {
         email: email,
         password: genaratePassword(),
       );
-      createDocumentForUser(userCredential);
+      createDocumentForUser(userCredential.user!.uid);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
@@ -196,11 +196,8 @@ class _CreateUserState extends State<CreateUser> {
     }
   }
 
-  void createDocumentForUser(userCredential) {
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(userCredential.toString())
-        .set({
+  void createDocumentForUser(uid) {
+    FirebaseFirestore.instance.collection('users').doc(uid).set({
       'name': name,
       'email': email,
       'type': selectedUserType,
