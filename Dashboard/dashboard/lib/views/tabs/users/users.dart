@@ -49,7 +49,7 @@ class _UsersViewState extends State<UsersView> {
                           child: Padding(
                             padding: kCardsInsidePadding,
                             child: Text(
-                              data['type'] == 'admin' ? 'Admin' : 'Manager',
+                              data['type'],
                               style: kCardQuantityTextStyle,
                             ),
                           ),
