@@ -1,3 +1,4 @@
+import 'package:dashboard/views/tabs/dashboard/donationsPieChart.dart';
 import 'package:dashboard/views/tabs/dashboard/usersPieChart.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +13,7 @@ class _PieChartsRowState extends State<PieChartsRow> {
     return Row(
       children: const [
         Flexible(child: UsersPieChart()),
-        Flexible(child: UsersPieChart()),
+        Flexible(child: DonationsPieChart()),
       ],
     );
   }
