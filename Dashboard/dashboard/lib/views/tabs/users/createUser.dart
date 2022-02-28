@@ -1,5 +1,9 @@
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dashboard/utilities/const.dart';
 import 'package:dashboard/views/home.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
@@ -20,6 +24,12 @@ class _CreateUserState extends State<CreateUser> {
 
   TextEditingController nameTEC = TextEditingController();
   TextEditingController emailTEC = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    print(genaratePassword());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +86,19 @@ class _CreateUserState extends State<CreateUser> {
           ),
           Padding(
             padding: kTextFieldPadding,
+            child: TextField(
+              onChanged: (value) {
+                setState(() {
+                  email = value;
+                });
+              },
+              controller: emailTEC,
+              keyboardType: TextInputType.emailAddress,
+              decoration: kTextInputDecoration('Email', false),
+            ),
+          ),
+          Padding(
+            padding: kTextFieldPadding,
             child: InputDecorator(
               decoration: InputDecoration(
                 border: OutlineInputBorder(
@@ -125,6 +148,85 @@ class _CreateUserState extends State<CreateUser> {
   }
 
   void validate() {
-    if (nameTEC.text.isNotEmpty) {}
+    if (nameTEC.text.isNotEmpty && emailTEC.text.isNotEmpty) {
+      createUser();
+      setState(() {
+        isLoading = true;
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Fields cannot be empty!'),
+        ),
+      );
+    }
+  }
+
+  Future<void> createUser() async {
+    try {
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: genaratePassword(),
+      );
+      createDocumentForUser(userCredential);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        setState(() {
+          isLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('The account already exists for that email'),
+          ),
+        );
+      }
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Cannot create user'),
+        ),
+      );
+    }
+  }
+
+  void createDocumentForUser(userCredential) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userCredential.toString())
+        .set({
+      'name': name,
+      'email': email,
+      'type': selectedUserType,
+    }).then((value) {
+      resetPassword(email);
+    });
+  }
+
+  Future<void> resetPassword(String email) async {
+    await FirebaseAuth.instance
+        .sendPasswordResetEmail(email: email)
+        .then((value) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Successful!'),
+        ),
+      );
+    });
+  }
+
+  String genaratePassword() {
+    return Random().nextInt(999999999).toString() +
+        Random().nextInt(999999999).toString();
   }
 }
